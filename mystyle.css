@@ -54,7 +54,8 @@ body
 }
 .about
 {
-    margin-left : 15px;
+    margin-left : 0px;
+    font-size: 13pt;
 }
 .profile-info
 {
@@ -82,6 +83,8 @@ body
 {
     text-align: justify;
     text-justify: inter-word;
+    line-height: 1.75em;
+    font-size: 13pt;
 }
 .course-list
 {
@@ -109,6 +112,8 @@ body
 {
     text-align: justify;
     text-justify: inter-word;
+    font-size: 13pt;
+    line-height: 1.75em;
 }
 
 .collapsible {
@@ -120,7 +125,7 @@ body
     border: none;
     text-align: left;
     outline: none;
-    font-size: 15px;
+    font-size: 18px;
   }
   
   /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
@@ -167,6 +172,8 @@ body
   {
       text-align: justify;
       text-justify: inter-word;
+      font-size: 13pt;
+      line-height: 1.75em;
   }
 
   .papers-list
@@ -195,6 +202,8 @@ body
   {
       text-align: justify;
       text-justify: inter-word;
+      font-size: 13pt;
+      line-height: 1.75em;
   }
   .awards-list
   {
@@ -222,6 +231,8 @@ body
   {
       text-align: justify;
       text-justify: inter-word;
+      font-size: 13pt;
+      line-height: 1.75em;
   }
 
   .contact-page
@@ -250,4 +261,6 @@ body
   {
       text-align: justify;
       text-justify: inter-word;
+      font-size: 13pt;
+      line-height: 1.75em;
   }
