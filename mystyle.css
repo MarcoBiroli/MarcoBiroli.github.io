@@ -6,8 +6,11 @@
 }
 body
 {
-    background:  #efefef;
+    background:  hsl(0, 0%, 80%);
     font-family: sans-serif;
+    margin-left: 12%;
+    margin-right: 12%;
+    padding-bottom: 100vh;
 }
 .topnav {
     background-color: #333;
@@ -32,17 +35,21 @@ body
   
   /* Add a color to the active/current link */
   .topnav a.active {
-    background-color: #4CAF50;
+    background-color: #c2562c;
     color: white;
 }
 .profile-img
 {
-    width : 20%;
+    width : 15%;
+    padding: 0;
+    margin-top: 15px;
     float: right;
 }
 .profile-img img
 {
-    width : 60%;
+    width : 100%;
+    margin-bottom: 15px;
+    float: right;
     height: auto;
 }
 .about
@@ -51,176 +58,196 @@ body
 }
 .profile-info
 {
-    width : 60%;
+    width : 83%;
+    margin-right: 2%;
+    margin-top: 15px;
     float: left;
     padding: 0 30px;
+    background-color: hsl(0, 0%, 90%);
+    padding-bottom: 50px;
 }
 .profile-info h1
 {
     margin-top: 50px;
     margin-bottom: 30px;
 }
+
+.profile-info h2
+{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.profile-info p
+{
+    text-align: justify;
+    text-justify: inter-word;
+}
 .course-list
 {
-    width: 60%;
+    width : 83%;
+    margin-right: 2%;
+    margin-top: 15px;
     float: left;
-    padding: 10 30px;
+    padding: 0 30px;
+    background-color: hsl(0, 0%, 90%);
+    padding-bottom: 50px;
 }
+.course-list h1
+{
+    margin-top: 50px;
+    margin-bottom: 30px;
+}
+
 .course-list h2
 {
-    margin-top: 50px;
-    margin-bottom: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
-.course-list dl {
-    width: 100%;
-    overflow: hidden;
-    background: hsl(0, 0%, 70%);
-    padding: 0;
-    margin: 0;
-}
-.course-list dt {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 70%);
-    padding-top: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
 
-}
-.course-list dd {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 90%);
-    padding: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-}
-.project-list
+.course-list p
 {
-    width: 60%;
-    float: left;
-    padding: 10 30px;
+    text-align: justify;
+    text-justify: inter-word;
 }
-.project-list h2
-{
-    margin-top: 50px;
-    margin-bottom: 15px;
-}
-.project-list dl {
-    width: 100%;
-    overflow: hidden;
-    background: hsl(0, 0%, 70%);
-    padding: 0;
-    margin: 0;
-}
-.project-list dt {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 70%);
-    padding-top: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
 
-}
-.project-list dd {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 90%);
-    padding: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-}
-.papers-list
-{
-    width: 60%;
-    float: left;
-    padding: 10 30px;
-}
-.papers-list h2
-{
-    margin-top: 50px;
-    margin-bottom: 15px;
-}
-.papers-list dl {
+.collapsible {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
     width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+  
+  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+  .active, .collapsible:hover {
+    background-color: #ccc;
+  }
+  
+  /* Style the collapsible content. Note: hidden by default */
+  .course-content {
+    padding: 0 18px;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: justify;
+    text-justify: inter-word;
+    display: none;
     overflow: hidden;
-    background: hsl(0, 0%, 70%);
-    padding: 0;
-    margin: 0;
-}
-.papers-list dt {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 70%);
-    padding-top: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
+  }
 
-}
-.papers-list dd {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 90%);
-    padding: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-}
-.awards-list
-{
-    width: 60%;
-    float: left;
-    padding: 10 30px;
-}
-.awards-list h2
-{
-    margin-top: 50px;
-    margin-bottom: 15px;
-}
-.awards-list dl {
-    width: 100%;
-    overflow: hidden;
-    background: hsl(0, 0%, 70%);
-    padding: 0;
-    margin: 0;
-}
-.awards-list dt {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 70%);
-    padding-top: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
+  .project-list
+  {
+      width : 83%;
+      margin-right: 2%;
+      margin-top: 15px;
+      float: left;
+      padding: 0 30px;
+      background-color: hsl(0, 0%, 90%);
+      padding-bottom: 50px;
+  }
+  .project-list h1
+  {
+      margin-top: 50px;
+      margin-bottom: 30px;
+  }
+  
+  .project-list h2
+  {
+      margin-top: 20px;
+      margin-bottom: 10px;
+  }
+  
+  .project-list p
+  {
+      text-align: justify;
+      text-justify: inter-word;
+  }
 
-}
-.awards-list dd {
-    float: left;
-    width: 50%;
-    /* adjust the width; make sure the total of both is 100% */
-    background: hsl(0, 0%, 90%);
-    padding: 0;
-    margin-top: -2px;
-    margin-left: 0px;
-    border-bottom: 1px solid black;
-    border-top: 1px solid black;
-}
+  .papers-list
+  {
+      width : 83%;
+      margin-right: 2%;
+      margin-top: 15px;
+      float: left;
+      padding: 0 30px;
+      background-color: hsl(0, 0%, 90%);
+      padding-bottom: 50px;
+  }
+  .papers-list h1
+  {
+      margin-top: 50px;
+      margin-bottom: 30px;
+  }
+  
+  .papers-list h2
+  {
+      margin-top: 20px;
+      margin-bottom: 10px;
+  }
+  
+  .papers-list p
+  {
+      text-align: justify;
+      text-justify: inter-word;
+  }
+  .awards-list
+  {
+      width : 83%;
+      margin-right: 2%;
+      margin-top: 15px;
+      float: left;
+      padding: 0 30px;
+      background-color: hsl(0, 0%, 90%);
+      padding-bottom: 50px;
+  }
+  .awards-list h1
+  {
+      margin-top: 50px;
+      margin-bottom: 30px;
+  }
+  
+  .awards-list h2
+  {
+      margin-top: 20px;
+      margin-bottom: 10px;
+  }
+  
+  .awards-list p
+  {
+      text-align: justify;
+      text-justify: inter-word;
+  }
+
+  .contact-page
+  {
+      width : 83%;
+      margin-right: 2%;
+      margin-top: 15px;
+      float: left;
+      padding: 0 30px;
+      background-color: hsl(0, 0%, 90%);
+      padding-bottom: 50px;
+  }
+  .contact-page h1
+  {
+      margin-top: 50px;
+      margin-bottom: 30px;
+  }
+  
+  .contact-page h2
+  {
+      margin-top: 20px;
+      margin-bottom: 10px;
+  }
+  
+  .contact-page p
+  {
+      text-align: justify;
+      text-justify: inter-word;
+  }
