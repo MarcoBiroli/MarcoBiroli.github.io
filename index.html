@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marco Biroli</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Initial Animation Screen with Particles -->
+  <div id="animation">
+    <canvas id="particleCanvas"></canvas>
+  </div>
+
+  <div class="background">
+  <!-- Main Content -->
+  <div class="container hidden">
+    <!-- Left (Static) Section -->
+    <div class="left">
+      <div class="content">
+        <div class="top">
+            <div class="NameAndPicture">
+                <div class="Name">
+                    <h1>Marco Biroli</h1>
+                    <h2>LPTMS, Université Paris-Saclay</h2>
+                    <p>3rd Year PhD Student in statistical physics
+                        <br>
+                        marco(dot)biroli(at)gmail(dot)com
+                    </p>
+                </div>
+                <div class="Picture">
+                    <img src = "pp.png" width="100%">
+                </div>
+            </div>
+
+            <!-- Table of contents with anchor links -->
+            <nav class="table-of-contents">
+            <ul>
+                <li><a href="#aboutme">About me</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#awards">Awards</a></li>
+                <li><a href="#publications">Publications</a></li>
+                <li><a href="#teaching">Teaching</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#miscellaneous">Miscellaneous</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            </nav>
+        </div>
+        <div class="bottom">
+            <!-- Icons for Google Scholar and Twitter -->
+            <div class="social-icons">
+            <a href="mailto:marco.biroli@gmail.com" target="_blank">
+                <img src="email-icon.png" alt="Email" style="filter: invert(100%);">
+            </a>
+            <a href="https://scholar.google.com/citations?user=U4DVTL0AAAAJ&hl=en" target="_blank">
+                <img src="google-scholar-icon.png" alt="Google Scholar">
+            </a>
+            <a href="https://x.com/MarcoBiroli1" target="_blank">
+                <img src="twitter-icon.png" alt="Twitter">
+            </a>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right (Scrolling) Section -->
+    <div class="right">
+      <div class="scroll-content">
+        <section id="aboutme">
+          <h2>About Me</h2>
+          <p>I’m a third year PhD student in statistical physics under the supervision of 
+            Pr. Majumdar at the Laboratoire de Physique Théorique et Modèles Statistiques 
+            in Orsay, France.
+          </p>
+          <br>
+          <p>
+            Previously I’ve completed my masters degree in theoretical physics 
+            at Ecole Normale Supérieure in Paris and my Bachelor’s degree with a 
+            double major in Mathematics and Physics at Ecole Polytechnique in Palaiseau.
+            <br>
+            <br>
+            My current research interests are mainly focused on:
+          </p>
+          <br>
+          <ul class="wp-block-list">
+            <li>Extreme Value Statistics of strongly correlated variables</li><br>
+            <li>Order, Gap &amp; Record Statistics for Stochastic Time Series</li><br>
+            <li>Diverse applications of Random Matrix Theory</li><br>
+            <li>Stochastic Resetting</li><br>
+            <li>Random search problems, non-Markov processes etc.</li><br>
+            <li>Interacting particle systems, trapping problems.</li>
+          </ul>
+          <a href="" target="_blank">View Full Résumé</a>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <div class="elemlist">
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2022 - Ongoing 
+                        <br>
+                        Laboratoire de Physique Théorique et Modèles Statistiques (LPTMS), 
+                        Université Paris-Saclay, 530 Rue André Rivière, 91400 Orsay, France.
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://www.lptms.universite-paris-saclay.fr/satya-majumdar/" target="_blank">
+                            PhD. under the supervision of Pr. Majumdar.
+                        </a>
+                        <p>
+                            During my doctorate I've been mainly studying non-equilibrium 
+                            statistical physics, extreme value statistics, strongly correlated systems
+                            and random matrix theory, leading to several <a href="#publications">publications</a>.
+                            I have also <a href="#teaching">taught</a> a class in experimental physics 
+                            and <a href="#miscellaneous">created/organized</a> a seminar series for the lab. 
+                        </p>
+                    </div>
+                </div>
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2020 - 2022 
+                        <br>
+                        Ecole Normale Superieure, 45 rue d'Ulm, 75005 Paris, France.
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://www.phys.ens.fr/fr/formations/master-icfp" target="_blank">
+                            Master du Centre International de Physique Fondamentale et de ses Interfaces (ICFP)
+                        </a>
+                        <p>
+                            Summa Cum Laude. GPA: 17.96/20.
+                        </p>
+                    </div>
+                </div>
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2019 - 2020 
+                        <br>
+                        Ecole Normale Superieure, 45 rue d'Ulm, 75005 Paris, France.
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://www.phys.ens.fr/fr/formations/licence-3" target="_blank">
+                            Licence 3 en Physique Fondamentale.
+                        </a>
+                        <p>
+                            GPA: 15.5/20 in Phyiscs and 19.5/20 in Mathematics and Computer Science.
+                        </p>
+                    </div>
+                </div>
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2017 - 2020 
+                        <br>
+                        Ecole Polytechnique, Route de Saclay, 91120 Palaiseau, France.
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://programmes.polytechnique.edu/bachelor/a-propos-du-bachelor/bachelor-of-science" target="_blank">
+                            Bachelor of Science, double major in physics and mathematics.
+                        </a>
+                        <p>
+                            Summa Cum Laude. GPA: 4.17/4.0
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="awards">
+            <h2>Awards</h2>
+            <div class="elemlist">
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2022-2025
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://ens-paris-saclay.fr/recherche/doctorat/contrats-doctoraux-specifiques-normaliens-cdsn" target="_blank">
+                            Contrats doctoraux spécifiques normaliens (CDSN), 75 600 €
+                        </a>
+                        <p>
+                            Competitive 3 Year Doctoral Scholarship.
+                        </p>
+                    </div>
+                </div>
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2019-2022
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://www.phys.ens.psl.eu/en/formations/bachelor" target="_blank">
+                            Scholarship of the physics departement of ENS-PSL, 30 000 €
+                        </a>
+                        <p>
+                            Competitive 3 year excellence scholarship.
+                        </p>
+                    </div>
+                </div>
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2018-2020
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://programmes.polytechnique.edu/bachelor/frais-et-financement/bourses-et-aides-financieres#:~:text=BOURSE%20D'EXCELLENCE&text=Ces%20bourses%20s'%C3%A9l%C3%A8vent%20%C3%A0,%C3%A0%20l'assiduit%C3%A9%20chaque%20ann%C3%A9e.&text=Historiquement%2C%20les%20femmes%20ont%20%C3%A9t%C3%A9,les%20domaines%20d'%C3%A9tudes%20scientifiques." target="_blank">
+                            Excellence Scholarship from the Ecole Polytechnique Foundation, 9 600 €
+                        </a>
+                        <p>
+                            Competitive 2 year excellence scholarship.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="publications">
+          <h2>Publications</h2>
+          <div class="elemlist">
+            <div class="elem">
+                <div class="dateandinfo">
+                    2024 - M. Biroli, Y. Feld, A. K. Hartmann, S. N. Majumdar and G. Schehr,
+                    arXiv preprint arXiv:2406.08387.
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://arxiv.org/pdf/2406.08387" target="_blank">
+                        Resetting by rescaling: exact results for a diffusing particle in one-dimension
+                    </a>
+                    <p>
+                        This paper studies a diffusive particle on a line 
+                        undergoing stochastic resetting by rescaling its position by a constant 
+                        factor <b>a</b>, which can be positive or negative. We derive the 
+                        stationary position distribution, which is symmetric with a 
+                        Gaussian peak but decays exponentially at larger distances. 
+                        We also analyze the mean first-passage time (MFPT) to a target 
+                        from the origin, finding that the MFPT exhibits a minimum 
+                        at a specific rescaling factor. The results indicate that 
+                        while positive rescaling is not beneficial for searching, 
+                        negative rescaling enhances the efficiency of target search 
+                        in one dimension, demonstrating the advantages of resetting 
+                        combined with reflection.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    2024 - M. Biroli, M. Kulkarni, S. N. Majumdar and G. Schehr, 
+                    Physical Review E <b>109</b> (3), L032106.
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract" target="_blank">
+                    <a href="">
+                        Dynamically emergent correlations between particles in a switching harmonic trap
+                    </a>
+                    <p>
+                        This study examines a one-dimensional gas of noninteracting diffusing 
+                        particles in a harmonic trap, where the stiffness alternates 
+                        between two values. Despite the lack of direct interactions, 
+                        strong correlations arise among the particles due to the dynamics 
+                        over time. We derive the joint distribution of the particles' 
+                        positions in the stationary state, and derive a variety of obserables.
+                        The extreme value statistics have a particularly interesting non-trivial 
+                        shape defined on a bounded support and universally describing the entirety 
+                        of the gas.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    2024 - M. Biroli, H. Larralde, S. N. Majumdar and G. Schehr, 
+                    Physical Review E <b>109</b> (1), 014101.
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://arxiv.org/pdf/2307.15351" target="_blank">
+                        Exact extreme, order, and sum statistics in a class of strongly correlated systems
+                    </a>
+                    <p>
+                        The paper introduces a class of solvable strongly correlated systems 
+                        where a set of independent random variables become correlated through 
+                        a random parameter. Despite strong correlations, the system retains a
+                        solvable structure for various observables, such as extreme value statistics for example. 
+                        The method is demonstrated several examples: particles performing 
+                        Brownian motion, ballistic motion, and Lévy flights, all correlated 
+                        through simultaneous resetting. The results are supported by 
+                        simulations, offering a framework to generate many solvable 
+                        strongly correlated systems.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    <p>
+                        2023 - M. Biroli, S. N. Majumdar and G. Schehr, Physical Review 
+                        E <b>107</b> (6), 064141.
+                    </p>
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://arxiv.org/pdf/2303.18012" target="_blank">
+                        Critical number of walkers for diffusive search processes with resetting
+                    </a>
+                    <p>
+                        The study investigates <b>N</b> independent Brownian walkers starting at
+                        <b>x0 > 0</b>, searching for an absorbing target at the origin, with 
+                        either simultaneous stochastic resetting or independent stochastic resetting. 
+                        The mean time to reach the target is minimized at an 
+                        optimal resetting rate, but only when <b>N</b> is below a critical value, 
+                        <b>Nc</b>. For <b>N > Nc</b>, resetting hinders the search process. 
+                        The critical <b>Nc</b> values are calculated as approximately 7.33 
+                        for independent resetting and 6.36 for simultaneous resetting.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    <p>
+                        2023 - M. Biroli, H. Larralde, S. N. Majumdar and
+                        G. Schehr, Physical Review Letters <b>130</b> (20), 207101.
+                    </p>
+                </div>
+                <div class = "spacer">
+                </div>
+                <div class="titleandabstract">
+                    <a href="https://arxiv.org/pdf/2211.00563" target="_blank">
+                        Extreme statistics and spacing distribution in a Brownian gas correlated by resetting
+                    </a>
+                    <p>
+                        This study examines a one-dimensional gas of <b>N</b> Brownian particles that diffuse independently but are reset to the origin at a constant rate. Despite strong correlations caused by simultaneous resetting, the system reaches a nonequilibrium stationary state, allowing exact computation of observables like average density, particle position distribution, and spacing between particles. Numerical simulations confirm the analytical results, and potential experimental implementation using optical traps is discussed.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    <p>
+                        2022 - M. Biroli, F. Mori and S. N. Majumdar, Journal of Physics A: Mathematical and Theoretical <b>55</b> (24), 244001
+                    </p>
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://arxiv.org/pdf/2202.04906" target="_blank">
+                        Number of distinct sites visited by a resetting random walker
+                    </a>
+                    <p>
+                        We investigate the number of distinct sites <b>V(n)</b> visited by an <b>n</b>-step 
+                        resetting random walker on a <b>d</b>-dimensional hypercubic lattice 
+                        with resetting probability <b>p</b>. In the case <b>p = 0</b>, 
+                        we recover the well-known result that the average number of distinct 
+                        sites grows for large <b>n</b> as <b>⟨V(n)⟩ ∼ n^d/2</b> for <b>d< 2</b> 
+                        and as <b>⟨V(n)⟩ ∼ n</b> for <b>d > 2</b>. For <b>p > 0</b>, we show 
+                        that <b>⟨V(n)⟩</b> grows extremely slowly as <b>⟨V(n)⟩ ~ log(n)^d</b>.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    <p>
+                        2022 - F.E. E. Orche, R. Géraud-Stewart, P. B. Rønne, G. Bana, 
+                        D. Naccache, P. Y.A. Ryan, M. Biroli, M. Dervishi, H. Waltsburger, IJCEV
+                    </p>
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://library.oapen.org/bitstream/handle/20.500.12657/58339/1/978-3-031-15911-4.pdf#page=31" target="_blank">
+                        Time, Privacy, Robustness, Accuracy: Trade-Offs for the Open Vote Network Protocol
+                    </a>
+                    <p>
+                        The Open Vote Network (OV-Net) is a secure multi-party protocol that allows 
+                        for decentralized, anonymous voting by summing votes without revealing 
+                        individual values. However, it is vulnerable to denial-of-service attacks:
+                        if any voter from the first round fails to participate in the second round, 
+                        the whole protocol has to be restarted. This paper proposes an extension to 
+                        OV-Net that tolerates unresponsive participants by running parallel 
+                        sub-elections, balancing privacy, computational costs, and accuracy.
+                    </p>
+                </div>
+            </div>
+          </div>
+        </section>
+        
+        <section id="teaching">
+            <h2>Teaching</h2>
+            <div class="elemlist">
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2nd Semester 2023-2024
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://ecampus.paris-saclay.fr/enrol/index.php?id=116116" target="_blank">
+                            Undergraduate Experimental Physics
+                        </a>
+                        <p>
+                            Assistant Professor.
+                        </p>
+                    </div>
+                </div>
+                <div class="elem">
+                    <div class="dateandinfo">
+                        6-16 October 2023
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <a href="https://ens-paris-saclay.fr/agenda/fete-de-la-science-2023-lens-paris-saclay" target="_blank">
+                            National divulgation physics event aimed at highschool students
+                        </a>
+                        <p>
+                            Animator of a stand on Probabilites.
+                        </p>
+                    </div>
+                </div>
+                <div class="elem">
+                    <div class="dateandinfo">
+                        2019-2022
+                    </div>
+                    <div class="spacer"></div>
+                    <div class="titleandabstract">
+                        <div class="nonlinked-a">
+                            Private Tutoring
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience">
+          <h2>Experience</h2>
+          <div class="elemlist">
+            <div class="elem">
+                <div class="dateandinfo">
+                    July 2024
+                    <br>
+                    Ecole de Physique des Houches
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://www.lptms.universite-paris-saclay.fr/leshouches2024/" target="_blank">
+                        Theory of Large Deviations and Applications Summer School
+                    </a>
+                    <p>
+                        Contributed Poster.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    17-19 June 2024
+                    <br>
+                    Higgs Centre for Theoretical Physics
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://higgs.ph.ed.ac.uk/workshops/new-vistas-in-stochastic-resetting/" target="_blank">
+                        New Vistas in Stochastic Resetting
+                    </a>
+                    <p>
+                        Contributed Poster.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    July 2023
+                    <br>
+                    Institut d'études scientifiques de Cargèse
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://sites.google.com/view/qlgp-cargese-2023/home" target="_blank">
+                        Quantum localization and Glassy physics
+                    </a>
+                    <p>
+                        Contributed Poster.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    June 2023
+                    <br>
+                    The Beg Rohu Summer School
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://www.ipht.fr/Meetings/BegRohu2023/index.html" target="_blank">
+                        Statistical Physics of Complex Systems Summer School
+                    </a>
+                    <p>
+                        Contributed Poster.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    3-7 April 2023
+                    <br>
+                    Ecole de Physique des Houches
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://gdr-ide-2023.sciencesconf.org/" target="_blank">
+                        Workshop "Interaction, Disorder and Elasticity"
+                    </a>
+                    <p>
+                        Contributed Talk.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    28-30 November 2022
+                    <br>
+                    Université Grenoble-Alpes
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://gdr-ide-2022.sciencesconf.org/" target="_blank">
+                        Groupement de Recherche (GDR) "Interaction, Disorder and Elasticity"
+                    </a>
+                    <p>
+                        Contributed Poster.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    3-5 October 2022
+                    <br>
+                    INRIA Lille
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://project.inria.fr/asymmetryinlille/" target="_blank">
+                        Asymmetry in interacting particle systems, microscopic and macroscopic effects
+                    </a>
+                    <p>
+                        Attended.
+                    </p>
+                </div>
+            </div>
+          </div>
+        </section>
+        
+        <section id="miscellaneous">
+          <h2>Miscellaneous</h2>
+          <div class="elemlist">
+            <div class="elem">
+                <div class="dateandinfo">
+                    2022-Ongoing
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://orcid.org/0000-0001-9415-2504" target="_blank">
+                        Reviewer
+                    </a>
+                    <p>
+                        Review for J-Phys A and Chaos.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    2024-Ongoing
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://www.lptms.universite-paris-saclay.fr/" target="_blank">
+                        LPTMS Student Representative at the lab board.
+                    </a>
+                    <p>
+                        Was elected to be the student representative at the Assemblée Générale (AG) 
+                        of the lab.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    2022-2024
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://programmes.polytechnique.edu/bachelor/a-propos-du-bachelor/bachelor-of-science" target="_blank">
+                        Assessor for the Bachelor of Polytechnique admissions
+                    </a>
+                    <p>
+                        Assessed around ~50 candidate files for admission.
+                    </p>
+                </div>
+            </div>
+            <div class="elem">
+                <div class="dateandinfo">
+                    2022-2023
+                </div>
+                <div class="spacer"></div>
+                <div class="titleandabstract">
+                    <a href="https://www.lptms.universite-paris-saclay.fr/events/categories/seminars/" target="_blank">
+                        Creator and organizer of the LPTMS Statistical Physics seminar series.
+                    </a>
+                    <p>
+                        Created the seminar series, invited speakers, organized the logistics.
+                    </p>
+                </div>
+            </div>
+          </div>
+        </section>
+        
+        <section id="contact">
+          <h2>Contact</h2>
+          <p>The best way to reach me is by email: marco (dot) biroli (at) gmail (dot) com</p>
+        </section>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
