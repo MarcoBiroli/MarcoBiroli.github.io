@@ -373,7 +373,7 @@ html {
 
 
 /* Responsive Design - Hide left column on small screens */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
     .container {
       grid-template-columns: 1fr; /* Only one column */
     }
@@ -388,7 +388,18 @@ html {
     }
   }
 
+.separator {
+  display: none;
+}
+
   @media (max-width: 500px) {
+  .separator {
+    display: block;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    margin: 10px 0;
+  }
+
   .right .scroll-content .elemlist .elem {
     flex-direction: column;
   }
