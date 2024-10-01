@@ -233,6 +233,7 @@
   
   .right .scroll-content {
     padding: 0px;
+    margin-bottom: 50vh;
   }
 
   .right .scroll-content ul {
@@ -387,6 +388,32 @@ html {
     }
   }
 
+  @media (max-width: 500px) {
+  .right .scroll-content .elemlist .elem {
+    flex-direction: column;
+  }
+
+  .right .scroll-content .elemlist .elem .dateandinfo {
+    margin-right: none;
+    margin-bottom: auto;
+    width: 100%;
+  }
+  .right .scroll-content .elemlist .elem .spacer {
+    width : 0%;
+    height: 25px;
+    margin-left: none;
+    margin-right: none;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .right .scroll-content .elemlist .elem .titleandabstract {
+    margin-left: none;
+    width : 100%;
+    margin-top: auto;
+  }
+}
+
 @media (max-height: 800px) {
   .left .content .top .table-of-contents {
       display: none;
@@ -408,3 +435,4 @@ html {
     margin-left: 0%;
   }
 }
+
