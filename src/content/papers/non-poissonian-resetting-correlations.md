@@ -1,7 +1,7 @@
 ---
 title: "Dynamically emergent correlations in Brownian particles subject to simultaneous non-Poissonian resetting protocols"
 authors:
-  - "Gennaro de Mauro"
+  - "Gabriele de Mauro"
   - "Marco Biroli"
   - "Satya N. Majumdar"
   - "Grégory Schehr"
