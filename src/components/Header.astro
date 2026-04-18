@@ -1,0 +1,19 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const path = Astro.url.pathname;
+function current(prefix: string): 'page' | undefined {
+  if (prefix === '/') return path === '/' ? 'page' : undefined;
+  return path.startsWith(prefix) ? 'page' : undefined;
+}
+---
+<header class="site-header">
+  <a href="/" class="site-title">Marco Biroli</a>
+  <nav>
+    <a href="/" aria-current={current('/')}>about</a>
+    <a href="/papers" aria-current={current('/papers')}>papers</a>
+    <a href="/notes" aria-current={current('/notes')}>notes</a>
+    <a href="/cv" aria-current={current('/cv')}>cv</a>
+    <ThemeToggle />
+  </nav>
+</header>

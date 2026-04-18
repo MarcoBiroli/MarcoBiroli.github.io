@@ -1,0 +1,40 @@
+---
+interface Props {
+  paper: {
+    data: {
+      title: string;
+      authors: string[];
+      venue: string;
+      year: number;
+      arxiv?: string;
+      pdf?: string;
+      code?: string;
+      doi?: string;
+      citations?: number;
+      highlighted?: boolean;
+      summary?: string;
+    };
+  };
+}
+const { paper } = Astro.props;
+const p = paper.data;
+const authorsHtml = p.authors
+  .map((a) => (a.toLowerCase().includes('biroli') ? `<strong>${a}</strong>` : a))
+  .join(', ');
+---
+<article class={`paper ${p.highlighted ? 'highlighted' : ''}`}>
+  <div class="title">{p.title}</div>
+  <div class="authors" set:html={authorsHtml} />
+  <div class="venue">
+    {p.venue} · {p.year}{p.citations != null ? ` · ${p.citations} citations` : ''}
+  </div>
+  {p.summary && <p class="summary">{p.summary}</p>}
+  {(p.arxiv || p.pdf || p.doi || p.code) && (
+    <div class="links">
+      {p.arxiv && <a href={p.arxiv}>arXiv</a>}
+      {p.pdf && <a href={p.pdf}>pdf</a>}
+      {p.doi && <a href={p.doi}>doi</a>}
+      {p.code && <a href={p.code}>code</a>}
+    </div>
+  )}
+</article>

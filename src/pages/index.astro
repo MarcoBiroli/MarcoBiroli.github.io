@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PaperEntry from '../components/PaperEntry.astro';
+import { getCollection } from 'astro:content';
+
+const allPapers = (await getCollection('papers')).sort(
+  (a, b) => b.data.year - a.data.year,
+);
+const highlighted = allPapers.filter((p) => p.data.highlighted);
+const rest = allPapers.filter((p) => !p.data.highlighted);
+const selected = (highlighted.length ? highlighted.concat(rest) : allPapers).slice(0, 5);
+
+const recentNotes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Marco Biroli',
+  givenName: 'Marco',
+  familyName: 'Biroli',
+  jobTitle: 'Research Scholar',
+  affiliation: {
+    '@type': 'CollegeOrUniversity',
+    name: 'University of Chicago',
+    url: 'https://www.uchicago.edu',
+  },
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'LPTMS, Université Paris-Saclay' },
+    { '@type': 'CollegeOrUniversity', name: 'École Normale Supérieure' },
+    { '@type': 'CollegeOrUniversity', name: 'École Polytechnique' },
+  ],
+  sameAs: [
+    'https://scholar.google.com/citations?user=U4DVTL0AAAAJ',
+    'https://github.com/marcobiroli',
+  ],
+  url: 'https://marcobiroli.github.io',
+  email: 'mailto:marco.biroli@gmail.com',
+  knowsAbout: [
+    'Statistical physics',
+    'Extreme value statistics',
+    'Stochastic resetting',
+    'Random matrix theory',
+    'Order statistics',
+    'Correlated particle systems',
+    'Machine learning',
+  ],
+};
+---
+<BaseLayout
+  title="Marco Biroli"
+  jsonLd={personJsonLd}
+  ogType="profile"
+  keywords={[
+    'statistical physics',
+    'extreme value statistics',
+    'stochastic resetting',
+    'random matrix theory',
+    'machine learning',
+    'Marco Biroli',
+  ]}
+>
+  <section>
+    <img class="hero-photo" src="/photo.jpg" alt="" onerror="this.style.display='none'" />
+    <h1>Marco Biroli</h1>
+    <p class="muted">Research Scholar, University of Chicago.</p>
+    <p>
+      I work on the statistical physics of extreme values and strongly
+      correlated particle systems — stochastic resetting, random matrix theory,
+      order statistics — and, increasingly, on where those tools meet machine
+      learning. Previously a PhD student at LPTMS, Université Paris-Saclay,
+      under Satya Majumdar.
+    </p>
+    <p class="small">
+      <a href="mailto:marco.biroli@gmail.com">email</a> ·
+      <a href="https://scholar.google.com/citations?user=U4DVTL0AAAAJ">scholar</a> ·
+      <a href="https://github.com/marcobiroli">github</a> ·
+      <a href="/cv">cv</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Selected publications</h2>
+    {selected.map((paper) => <PaperEntry paper={paper} />)}
+    <p class="small" style="margin-top:1rem;"><a href="/papers">All publications →</a></p>
+  </section>
+
+  {recentNotes.length > 0 && (
+    <section>
+      <h2>Recent notes</h2>
+      {recentNotes.map((n) => (
+        <article class="note-entry">
+          <div class="date">{n.data.date.toISOString().slice(0, 10)}</div>
+          <h3><a href={`/notes/${n.id}`}>{n.data.title}</a></h3>
+          <p class="small muted">{n.data.summary}</p>
+        </article>
+      ))}
+      <p class="small" style="margin-top:1rem;"><a href="/notes">All notes →</a></p>
+    </section>
+  )}
+</BaseLayout>

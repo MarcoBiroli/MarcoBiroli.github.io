@@ -1,0 +1,53 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  date: Date;
+  summary: string;
+  slug: string;
+  tags?: string[];
+}
+const { title, date, summary, slug, tags } = Astro.props;
+const iso = date.toISOString();
+const isoDate = iso.slice(0, 10);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: summary,
+  datePublished: iso,
+  author: {
+    '@type': 'Person',
+    name: 'Marco Biroli',
+    url: 'https://marcobiroli.github.io',
+  },
+  keywords: tags ?? [],
+  mainEntityOfPage: `https://marcobiroli.github.io/notes/${slug}`,
+};
+---
+<BaseLayout
+  title={`${title} — Marco Biroli`}
+  description={summary}
+  jsonLd={jsonLd}
+  ogType="article"
+  publishedTime={iso}
+  mdAlternate={`/notes/${slug}.md`}
+  keywords={tags}
+>
+  <article>
+    <div class="muted small">
+      <time datetime={isoDate}>{isoDate}</time>
+    </div>
+    <h1>{title}</h1>
+    <p class="muted">{summary}</p>
+    <hr />
+    <slot />
+    <hr />
+    <p class="small">
+      <a href="/notes">← all notes</a> ·
+      <a href={`/notes/${slug}.md`}>view as markdown</a>
+    </p>
+  </article>
+</BaseLayout>

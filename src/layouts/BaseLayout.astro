@@ -1,0 +1,79 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SideArt from '../components/SideArt.astro';
+import '../styles/global.css';
+import 'katex/dist/katex.min.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  ogType?: 'website' | 'article' | 'profile';
+  publishedTime?: string;
+  mdAlternate?: string;
+  keywords?: string[];
+}
+const {
+  title,
+  description = 'Marco Biroli — Research Scholar at the University of Chicago. Statistical physics of extreme values, correlated particle systems, and machine learning.',
+  jsonLd,
+  ogType = 'website',
+  publishedTime,
+  mdAlternate,
+  keywords,
+} = Astro.props;
+
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Marco Biroli" />
+    {keywords && <meta name="keywords" content={keywords.join(', ')} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Marco Biroli" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {publishedTime && <meta property="article:author" content="Marco Biroli" />}
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Marco Biroli — notes"
+      href="/rss.xml"
+    />
+    {mdAlternate && <link rel="alternate" type="text/markdown" href={mdAlternate} />}
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored ?? (prefersDark ? 'dark' : 'light');
+          document.documentElement.dataset.theme = theme;
+        } catch {}
+      })();
+    </script>
+  </head>
+  <body>
+    <SideArt />
+    <Header />
+    <main class="container">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

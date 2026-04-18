@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PaperEntry from '../components/PaperEntry.astro';
+import { getCollection } from 'astro:content';
+
+const papers = (await getCollection('papers')).sort(
+  (a, b) => b.data.year - a.data.year,
+);
+
+const byYear = new Map<number, typeof papers>();
+for (const p of papers) {
+  const arr = byYear.get(p.data.year) ?? [];
+  arr.push(p);
+  byYear.set(p.data.year, arr);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+const papersJsonLd = papers.map((p) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: p.data.title,
+  name: p.data.title,
+  author: p.data.authors.map((name) => ({ '@type': 'Person', name })),
+  datePublished: String(p.data.year),
+  isPartOf: { '@type': 'PublicationVolume', name: p.data.venue },
+  ...(p.data.doi ? { sameAs: p.data.doi, url: p.data.doi } : {}),
+  ...(p.data.arxiv ? { identifier: p.data.arxiv } : {}),
+  ...(p.data.citations != null ? { citation: `${p.data.citations} citations (Google Scholar)` } : {}),
+  ...(p.data.summary ? { abstract: p.data.summary } : {}),
+}));
+---
+<BaseLayout title="Papers — Marco Biroli" jsonLd={papersJsonLd}>
+  <h1>Publications</h1>
+  <p class="muted small">
+    See also <a href="https://scholar.google.com/citations?user=U4DVTL0AAAAJ">Google Scholar</a>.
+    Machine-readable: <a href="/papers.bib">BibTeX</a> · <a href="/llms.txt">llms.txt</a>.
+  </p>
+  {years.map((year) => (
+    <section>
+      <h2>{year}</h2>
+      {byYear.get(year)!.map((paper) => <PaperEntry paper={paper} />)}
+    </section>
+  ))}
+</BaseLayout>
