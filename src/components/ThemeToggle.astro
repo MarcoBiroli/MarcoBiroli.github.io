@@ -3,19 +3,6 @@
 <button id="theme-toggle" type="button" aria-label="Toggle color scheme" class="theme-toggle">
   <span aria-hidden="true">◐</span>
 </button>
-<style>
-  .theme-toggle {
-    margin-left: 1rem;
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0 0.25rem;
-    line-height: 1;
-  }
-  .theme-toggle:hover { color: var(--fg); }
-</style>
 <script>
   const btn = document.getElementById('theme-toggle');
   btn?.addEventListener('click', () => {
@@ -23,5 +10,6 @@
     const next = curr === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch {}
+    document.dispatchEvent(new CustomEvent('theme-change', { detail: { theme: next } }));
   });
 </script>

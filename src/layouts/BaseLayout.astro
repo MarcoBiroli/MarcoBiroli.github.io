@@ -1,7 +1,6 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import SideArt from '../components/SideArt.astro';
 import '../styles/global.css';
 import 'katex/dist/katex.min.css';
 
@@ -47,13 +46,14 @@ const canonical = Astro.site
     <meta property="og:site_name" content="Marco Biroli" />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
     {publishedTime && <meta property="article:author" content="Marco Biroli" />}
-    <link
-      rel="alternate"
-      type="application/rss+xml"
-      title="Marco Biroli — notes"
-      href="/rss.xml"
-    />
+    <link rel="alternate" type="application/rss+xml" title="Marco Biroli — notes" href="/rss.xml" />
     {mdAlternate && <link rel="alternate" type="text/markdown" href={mdAlternate} />}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
     {jsonLd && (
       <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     )}
@@ -64,16 +64,17 @@ const canonical = Astro.site
           const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
           const theme = stored ?? (prefersDark ? 'dark' : 'light');
           document.documentElement.dataset.theme = theme;
-        } catch {}
+        } catch {
+          document.documentElement.dataset.theme = 'light';
+        }
       })();
     </script>
   </head>
   <body>
-    <SideArt />
-    <Header />
-    <main class="container">
+    <div class="page">
+      <Header />
       <slot />
-    </main>
-    <Footer />
+      <Footer />
+    </div>
   </body>
 </html>

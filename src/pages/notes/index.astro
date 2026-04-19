@@ -7,13 +7,21 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
 );
 ---
 <BaseLayout title="Notes — Marco Biroli">
-  <h1>Notes</h1>
-  <p class="muted">Research explainers and miscellany.</p>
-  {notes.map((n) => (
-    <article class="note-entry">
-      <div class="date">{n.data.date.toISOString().slice(0, 10)}</div>
-      <h3><a href={`/notes/${n.id}`}>{n.data.title}</a></h3>
-      <p class="small muted">{n.data.summary}</p>
-    </article>
-  ))}
+  <section class="no-rule" style="padding-top: 50px;">
+    <div class="hd">
+      <div class="label">— Notes</div>
+      <h2><em>Research</em> explainers and miscellany.</h2>
+    </div>
+    <div class="note-list">
+      {notes.map((n) => (
+        <article>
+          <div class="date">{n.data.date.toISOString().slice(0, 10)}</div>
+          <div>
+            <h3><a href={`/notes/${n.id}`}>{n.data.title}</a></h3>
+            <p>{n.data.summary}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
 </BaseLayout>

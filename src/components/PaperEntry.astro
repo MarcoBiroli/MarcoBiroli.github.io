@@ -15,26 +15,26 @@ interface Props {
       summary?: string;
     };
   };
+  showSummary?: boolean;
 }
-const { paper } = Astro.props;
+const { paper, showSummary = false } = Astro.props;
 const p = paper.data;
 const authorsHtml = p.authors
-  .map((a) => (a.toLowerCase().includes('biroli') ? `<strong>${a}</strong>` : a))
+  .map((a) => (a.toLowerCase().includes('biroli') ? `<b>${a}</b>` : a))
   .join(', ');
 ---
-<article class={`paper ${p.highlighted ? 'highlighted' : ''}`}>
-  <div class="title">{p.title}</div>
-  <div class="authors" set:html={authorsHtml} />
-  <div class="venue">
-    {p.venue} · {p.year}{p.citations != null ? ` · ${p.citations} citations` : ''}
+<article class={`pub ${p.highlighted ? 'hl' : ''}`}>
+  <div class="yr">{p.year}</div>
+  <div>
+    <div class="t">{p.title}</div>
+    <div class="au" set:html={authorsHtml} />
+    <div class="vn">{p.venue}</div>
+    {showSummary && p.summary && <div class="summary">{p.summary}</div>}
   </div>
-  {p.summary && <p class="summary">{p.summary}</p>}
-  {(p.arxiv || p.pdf || p.doi || p.code) && (
-    <div class="links">
-      {p.arxiv && <a href={p.arxiv}>arXiv</a>}
-      {p.pdf && <a href={p.pdf}>pdf</a>}
-      {p.doi && <a href={p.doi}>doi</a>}
-      {p.code && <a href={p.code}>code</a>}
-    </div>
-  )}
+  <div class="lk">
+    {p.arxiv && <a href={p.arxiv}>arXiv</a>}
+    {p.doi && <a href={p.doi}>DOI</a>}
+    {p.pdf && <a href={p.pdf}>PDF</a>}
+    {p.code && <a href={p.code}>code</a>}
+  </div>
 </article>

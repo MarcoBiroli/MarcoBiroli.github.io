@@ -1,0 +1,24 @@
+---
+---
+<section id="now" class="currently">
+  <div class="hd">
+    <div class="label">— Currently</div>
+    <h2>What I'm <em>working on</em>.</h2>
+  </div>
+  <div class="card">
+    <div class="txt">
+      <p class="lead">A VAE is a <em>mean-field model</em> in disguise.</p>
+      <p>
+        The conditional-independence assumption baked into every VAE decoder —
+        <code>p<sub>θ</sub>(x | z) = Π<sub>i</sub> p(x<sub>i</sub> | z)</code> —
+        is formally equivalent to a finite-size mean-field factorization.
+      </p>
+      <p>
+        The consequence: a VAE perfectly recovers Curie–Weiss systems, but
+        structurally fails on genuinely correlated ones. Trained on 2D Ising
+        samples, it smears out the sharp singularity at
+        <em>T</em><sub>c</sub> ≈ 2.27. No amount of training recovers it.
+      </p>
+    </div>
+  </div>
+</section>

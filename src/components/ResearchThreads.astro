@@ -1,0 +1,73 @@
+---
+const threads = [
+  {
+    number: '01',
+    label: 'Machine learning',
+    primary: true,
+    title: 'The physics of <em>learning</em>',
+    body:
+      "Where statistical mechanics meets generative modeling. Why a VAE is structurally a finite-size mean-field model, and what that costs when the data isn't — with the 2D Ising transition as a clean test case.",
+    papers: [
+      { title: 'VAEs as finite-size mean-field models', href: '#now' },
+    ],
+  },
+  {
+    number: '02',
+    label: 'Correlated systems',
+    title: 'Dynamically <em>emergent</em> correlations',
+    body:
+      'Non-interacting particles coupled only by a shared reset event — enough to correlate a gas that would otherwise never meet. Exact results for extremes, gaps, and order statistics follow from conditioning on a single hidden variable.',
+    papers: [
+      {
+        title: 'Dynamically emergent correlations in switching traps',
+        href: 'https://arxiv.org/abs/2312.02570',
+      },
+      {
+        title: 'Experimental evidence for emergent correlations',
+        href: 'https://arxiv.org/abs/2508.07199',
+      },
+      {
+        title: 'Extreme statistics in a resetting Brownian gas',
+        href: 'https://arxiv.org/abs/2211.00563',
+      },
+      {
+        title: 'Exact extreme, order & sum statistics',
+        href: 'https://arxiv.org/abs/2307.15351',
+      },
+    ],
+  },
+  {
+    number: '03',
+    label: 'Random matrices',
+    title: 'Spectra under <em>resetting</em>',
+    body:
+      'Dyson Brownian motion of eigenvalues, reset simultaneously. Stationary density, extreme-eigenvalue statistics, and the crossover between repulsion- and reset-dominated regimes.',
+    papers: [
+      {
+        title: 'Resetting Dyson Brownian motion',
+        href: 'https://arxiv.org/abs/2503.14733',
+      },
+    ],
+  },
+];
+---
+<section id="work">
+  <div class="hd">
+    <div class="label">— Lines of work</div>
+    <h2>Three threads, <em>one question</em>.</h2>
+  </div>
+  <div class="threads">
+    {threads.map((t) => (
+      <div class={`t ${t.primary ? 'primary' : ''}`}>
+        <div class="n">{t.primary ? '' : ''}{t.number} — {t.label.toUpperCase()}</div>
+        <h3 set:html={t.title}></h3>
+        <p>{t.body}</p>
+        <div class="papers">
+          {t.papers.map((p) => (
+            <a href={p.href}>→ {p.title}</a>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

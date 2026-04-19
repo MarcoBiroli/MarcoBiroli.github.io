@@ -36,18 +36,18 @@ const jsonLd = {
   mdAlternate={`/notes/${slug}.md`}
   keywords={tags}
 >
-  <article>
-    <div class="muted small">
+  <article class="article">
+    <div class="kicker">
       <time datetime={isoDate}>{isoDate}</time>
     </div>
     <h1>{title}</h1>
-    <p class="muted">{summary}</p>
+    <p class="dek">{summary}</p>
     <hr />
     <slot />
-    <hr />
-    <p class="small">
-      <a href="/notes">← all notes</a> ·
+    <div class="post-nav">
+      <a href="/notes">← all notes</a>
+      &nbsp;·&nbsp;
       <a href={`/notes/${slug}.md`}>view as markdown</a>
-    </p>
+    </div>
   </article>
 </BaseLayout>
