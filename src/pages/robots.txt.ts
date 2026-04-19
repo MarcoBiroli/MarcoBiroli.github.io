@@ -33,8 +33,11 @@ export const GET: APIRoute = ({ site }) => {
     lines.push(`User-agent: ${bot}`, 'Allow: /', '');
   }
   lines.push(`Sitemap: ${base}/sitemap-index.xml`);
-  lines.push(`# Machine-readable summary: ${base}/llms.txt`);
-  lines.push(`# Full content dump:       ${base}/llms-full.txt`);
+  lines.push('');
+  lines.push('# Machine-readable profile:');
+  lines.push(`#   ${base}/llms.txt        — bio, positions, awards, bibliometrics, collaborators, publications`);
+  lines.push(`#   ${base}/llms-full.txt   — full prose (every paper + every note)`);
+  lines.push(`#   ${base}/papers.bib      — BibTeX`);
   lines.push('');
   return new Response(lines.join('\n'), {
     headers: { 'Content-Type': 'text/plain; charset=utf-8' },
