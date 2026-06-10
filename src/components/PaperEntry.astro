@@ -10,14 +10,14 @@ interface Props {
       pdf?: string;
       code?: string;
       doi?: string;
-      citations?: number;
       highlighted?: boolean;
       summary?: string;
     };
   };
   showSummary?: boolean;
+  scholar?: { citations: number; url: string };
 }
-const { paper, showSummary = false } = Astro.props;
+const { paper, showSummary = false, scholar } = Astro.props;
 const p = paper.data;
 const authorsHtml = p.authors
   .map((a) => (a.toLowerCase().includes('biroli') ? `<b>${a}</b>` : a))
@@ -32,6 +32,11 @@ const authorsHtml = p.authors
     {showSummary && p.summary && <div class="summary">{p.summary}</div>}
   </div>
   <div class="lk">
+    {scholar && scholar.citations > 0 && (
+      <a class="cites" href={scholar.url} title="Citation count from Google Scholar">
+        cited {scholar.citations}&times;
+      </a>
+    )}
     {p.arxiv && <a href={p.arxiv}>arXiv</a>}
     {p.doi && <a href={p.doi}>DOI</a>}
     {p.pdf && <a href={p.pdf}>PDF</a>}

@@ -1,24 +1,62 @@
 name: Deploy to GitHub Pages
 
+# Two ways in:
+#   - push to main            -> build + deploy (sync job skipped)
+#   - weekly cron / manual    -> refresh Google Scholar stats, commit if
+#                                changed, then build + deploy from that commit.
+# Single workflow because commits pushed with GITHUB_TOKEN do not trigger
+# other workflows' `on: push` (GitHub anti-recursion rule).
+
 on:
   push:
     branches: [main]
+  schedule:
+    - cron: '17 5 * * 1' # Mondays 05:17 UTC — weekly Scholar refresh
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
-  group: pages
+  group: pages-deploy
   cancel-in-progress: false
 
 jobs:
-  build:
+  sync-scholar:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r scripts/requirements.txt
+      - run: python scripts/fetch_scholar.py
+      - id: commit
+        run: |
+          if [ -n "$(git status --porcelain -- src/data/scholar.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/data/scholar.json
+            git commit -m "chore: update Google Scholar citation stats"
+            git push
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: sync-scholar
+    # Run on plain pushes (sync skipped) and after a successful sync;
+    # if the Scholar fetch failed, skip the deploy and keep serving the
+    # last-known-good numbers.
+    if: ${{ !cancelled() && (needs.sync-scholar.result == 'success' || needs.sync-scholar.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.sync-scholar.outputs.sha || github.sha }}
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -31,7 +69,11 @@ jobs:
 
   deploy:
     needs: build
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

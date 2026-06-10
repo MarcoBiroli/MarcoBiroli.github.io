@@ -9,7 +9,7 @@ authors:
   - "Grégory Schehr"
 venue: "arXiv preprint"
 year: 2025
-citations: 5
+scholar_id: "U4DVTL0AAAAJ:UebtZRa9Y70C"
 arxiv: "https://arxiv.org/abs/2508.07199"
 summary: "An optical-tweezers experiment that directly measures the emergent correlations predicted for particles in a stochastically switching trap — the first experimental realization of the mechanism."
 ---

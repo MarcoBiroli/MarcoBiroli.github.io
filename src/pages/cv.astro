@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { talks, schools } from '../data/talks';
 ---
 <BaseLayout title="CV — Marco Biroli">
   <article class="article">
@@ -12,8 +13,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     <h2>Positions</h2>
     <ul>
-      <li><strong>Research Scholar</strong>, University of Chicago — 2025–present</li>
-      <li><strong>PhD, Theoretical Physics</strong>, LPTMS, Université Paris-Saclay — advisor: Satya N. Majumdar, 2022–2025</li>
+      <li>
+        <strong>Research Scholar</strong>, University of Chicago — Departments of
+        Physics &amp; Computer Science, with Vincenzo Vitelli. Eric &amp; Wendy
+        Schmidt AI in Science fellow, 2025–present.
+      </li>
+      <li>
+        <strong>PhD, Theoretical Physics</strong>, LPTMS, Université Paris-Saclay —
+        advisor: Satya N. Majumdar, 2022–2025. Thesis:
+        <em>Strongly correlated stochastic systems</em>
+        (<a href="https://arxiv.org/abs/2508.12818">arXiv:2508.12818</a>).
+      </li>
     </ul>
 
     <h2>Education</h2>
@@ -22,26 +32,80 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <li><strong>BSc, Physics &amp; Mathematics (double major)</strong>, École Polytechnique — summa cum laude (4.17 / 4.0)</li>
     </ul>
 
-    <h2>Awards</h2>
+    <h2>Awards &amp; fellowships</h2>
     <ul>
-      <li>Doctoral contract, École Normale Supérieure (~€60 k)</li>
-      <li>Bourse d'Excellence, École Polytechnique (~€25 k)</li>
-      <li>Bourse de Mérite, École Polytechnique (~€10 k)</li>
+      <li>
+        Kadanoff–Rice Postdoctoral Scholarship, University of Chicago —
+        competitive one-year fellowship (on hold).
+      </li>
+      <li>
+        Eric &amp; Wendy Schmidt AI in Science Fellowship ($169,744) —
+        competitive two-year postdoctoral fellowship, 2025–2027.
+      </li>
+      <li>
+        CDSN doctoral scholarship, ENS (€75,600) — competitive three-year
+        scholarship, 2022–2025.
+      </li>
+      <li>ENS-PSL physics department excellence scholarship (~€10,000), 2019–2022.</li>
+      <li>École Polytechnique Foundation excellence scholarship (€9,600), 2018–2020.</li>
     </ul>
 
-    <h2>Teaching</h2>
+    <h2>Teaching &amp; mentoring</h2>
     <ul>
-      <li>Undergraduate experimental physics instructor, Université Paris-Saclay</li>
-      <li>Science outreach animator</li>
-      <li>Private tutoring, 2019–2022</li>
+      <li>Graduate-student supervision, University of Chicago (Vitelli group), January 2026–present.</li>
+      <li>First-year PhD student mentoring, LPTMS, Université Paris-Saclay, September 2024 – June 2025.</li>
+      <li>Undergraduate experimental physics instructor, Université Paris-Saclay, March–June 2024.</li>
+      <li>Science outreach — Fête de la Science stand on probability, October 2023.</li>
+      <li>Private tutoring, 2019–2022.</li>
+    </ul>
+
+    <h2>Talks, workshops &amp; seminars</h2>
+    <ul>
+      {talks.map((t) => (
+        <li>
+          <strong>{t.title}</strong> — {t.where}, {t.date}.
+          {t.kind && <em> ({t.kind})</em>}
+          {t.slides && (
+            <>
+              {' '}
+              <a href={t.slides}>slides</a>
+            </>
+          )}
+          {t.poster && (
+            <>
+              {' '}
+              <a href={t.poster}>poster</a>
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <h2>Schools</h2>
+    <ul>
+      {schools.map((s) => (
+        <li>
+          <strong>{s.title}</strong> — {s.where}, {s.date}.
+          {s.kind && <em> ({s.kind})</em>}
+          {s.poster && (
+            <>
+              {' '}
+              <a href={s.poster}>poster</a>
+            </>
+          )}
+        </li>
+      ))}
     </ul>
 
     <h2>Service</h2>
     <ul>
-      <li>Referee for journals in statistical physics</li>
-      <li>Student representative, LPTMS</li>
-      <li>Admissions assessor</li>
-      <li>Seminar series co-organizer</li>
+      <li>
+        Referee — Phys. Rev. Lett., Phys. Rev. E, J. Phys. A, J. Stat. Mech.,
+        Chaos, Chaos Solitons &amp; Fractals.
+      </li>
+      <li>Student representative at the lab board, LPTMS, 2024–2025.</li>
+      <li>Admissions assessor, École Polytechnique bachelor program, 2022–2024.</li>
+      <li>Creator &amp; organizer, LPTMS statistical-physics seminar series, 2022–2023.</li>
     </ul>
   </article>
 </BaseLayout>

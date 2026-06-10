@@ -61,8 +61,11 @@
     const resetColor = cs.getPropertyValue('--figure-reset').trim() || '#6a6f78';
     const traceAlpha = document.documentElement.dataset.theme === 'dark' ? 0.42 : 0.55;
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let { ctx, W, H } = setupCanvas(canvas);
     let running = true;
+    let visible = true;
+    let framePending = false;
     let t = 0;
     const history: Array<Array<{ t: number; y: number; reset: boolean }>> = Array.from(
       { length: N },
@@ -132,25 +135,55 @@
       ctx.globalAlpha = 1;
     }
 
-    function loop() {
-      if (!running) return;
-      step();
-      render();
-      requestAnimationFrame(loop);
-    }
-    loop();
-
     const onResize = () => {
       const s = setupCanvas(canvas);
       ctx = s.ctx;
       W = s.W;
       H = s.H;
+      if (reduceMotion) render();
     };
     window.addEventListener('resize', onResize);
+
+    if (reduceMotion) {
+      for (let i = 0; i < 700; i++) step();
+      render();
+      return {
+        destroy() {
+          window.removeEventListener('resize', onResize);
+        },
+      };
+    }
+
+    function loop() {
+      framePending = false;
+      if (!running || !visible || document.hidden) return;
+      step();
+      render();
+      schedule();
+    }
+    function schedule() {
+      if (!framePending) {
+        framePending = true;
+        requestAnimationFrame(loop);
+      }
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      visible = entries[0]?.isIntersecting ?? true;
+      if (visible) schedule();
+    });
+    io.observe(canvas);
+    const onVisibility = () => {
+      if (!document.hidden) schedule();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    schedule();
 
     return {
       destroy() {
         running = false;
+        io.disconnect();
+        document.removeEventListener('visibilitychange', onVisibility);
         window.removeEventListener('resize', onResize);
       },
     };

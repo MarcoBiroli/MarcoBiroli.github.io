@@ -2,10 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PaperEntry from '../components/PaperEntry.astro';
 import { getCollection } from 'astro:content';
+import { scholarInfoFor, scholarStats, SCHOLAR_PROFILE_URL } from '../lib/scholar';
 
 const papers = (await getCollection('papers')).sort(
   (a, b) => b.data.year - a.data.year,
 );
+const scholarMap = scholarInfoFor(papers);
+const stats = scholarStats();
 ---
 <BaseLayout title="Papers — Marco Biroli">
   <section class="pubs no-rule" style="padding-top: 50px;">
@@ -13,13 +16,22 @@ const papers = (await getCollection('papers')).sort(
       <div class="label">— Publications</div>
       <h2>Every <em>paper</em>, reverse chronological.</h2>
     </div>
-    <p style="color: var(--muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 28px;">
-      <a href="https://scholar.google.com/citations?user=U4DVTL0AAAAJ">Google Scholar</a>
+    <p style="color: var(--muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 10px;">
+      <a href={SCHOLAR_PROFILE_URL}>Google Scholar</a>
       &nbsp;·&nbsp; <a href="/papers.bib">BibTeX</a>
       &nbsp;·&nbsp; <a href="/llms.txt">llms.txt</a>
     </p>
+    {stats && (
+      <p class="scholar-line">
+        {stats.total.toLocaleString('en-US')} citations &nbsp;·&nbsp; h-index {stats.hIndex}
+        &nbsp;·&nbsp; i10-index {stats.i10}
+        <span class="asof"> — Google Scholar, {stats.asOf}</span>
+      </p>
+    )}
     <div class="list">
-      {papers.map((paper) => <PaperEntry paper={paper} showSummary />)}
+      {papers.map((paper) => (
+        <PaperEntry paper={paper} showSummary scholar={scholarMap.get(paper.id)} />
+      ))}
     </div>
   </section>
 </BaseLayout>

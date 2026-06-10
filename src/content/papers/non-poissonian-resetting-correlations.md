@@ -7,7 +7,7 @@ authors:
   - "Grégory Schehr"
 venue: "Physical Review E 113, 014120"
 year: 2026
-citations: 7
+scholar_id: "U4DVTL0AAAAJ:0EnyYjriUFMC"
 arxiv: "https://arxiv.org/abs/2509.06658"
 doi: "https://doi.org/10.1103/vmhz-6h5s"
 summary: "Generalizes the correlated Brownian gas to non-Poissonian resetting protocols — deterministic, power-law, heavy-tailed. The shape of the inter-reset distribution reshapes the correlation structure."

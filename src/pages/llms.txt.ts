@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { scholarInfoFor, scholarStats } from '../lib/scholar';
 
 export const GET: APIRoute = async ({ site }) => {
   const papers = (await getCollection('papers')).sort(
@@ -10,10 +11,12 @@ export const GET: APIRoute = async ({ site }) => {
   );
   const base = site?.toString().replace(/\/$/, '') ?? 'https://marcobiroli.github.io';
 
-  const totalCitations = papers.reduce((s, p) => s + (p.data.citations ?? 0), 0);
+  const scholarMap = scholarInfoFor(papers);
+  const stats = scholarStats();
+  const citesOf = (p: (typeof papers)[number]) => scholarMap.get(p.id)?.citations;
   const topCited = [...papers]
-    .filter((p) => p.data.citations != null)
-    .sort((a, b) => (b.data.citations ?? 0) - (a.data.citations ?? 0))
+    .filter((p) => (citesOf(p) ?? 0) > 0)
+    .sort((a, b) => (citesOf(b) ?? 0) - (citesOf(a) ?? 0))
     .slice(0, 3);
 
   const lines: string[] = [
@@ -44,11 +47,18 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     '## Bibliometric snapshot',
     '',
-    `- ${papers.length} peer-reviewed / preprint publications; total ~${totalCitations} citations; h-index 8; i10-index 7 (Google Scholar, April 2026).`,
-    '- Top-cited papers:',
-    ...topCited.map(
-      (p) => `    - *${p.data.title}* (${p.data.venue}, ${p.data.year}) — ${p.data.citations} citations.`,
-    ),
+    stats
+      ? `- ${papers.length} peer-reviewed / preprint publications; ${stats.total} total citations; h-index ${stats.hIndex}; i10-index ${stats.i10} (Google Scholar, ${stats.asOf}).`
+      : `- ${papers.length} peer-reviewed / preprint publications.`,
+    ...(topCited.length > 0
+      ? [
+          '- Top-cited papers:',
+          ...topCited.map(
+            (p) =>
+              `    - *${p.data.title}* (${p.data.venue}, ${p.data.year}) — ${citesOf(p)} citations.`,
+          ),
+        ]
+      : []),
     '',
     '## Frequent collaborators',
     '',
@@ -80,7 +90,8 @@ export const GET: APIRoute = async ({ site }) => {
     const authors = d.authors.join(', ');
     const venue = `${d.venue}, ${d.year}`;
     const summary = d.summary ? ` — ${d.summary}` : '';
-    const cites = d.citations != null ? ` · ${d.citations} citations` : '';
+    const numCites = citesOf(p);
+    const cites = numCites != null && numCites > 0 ? ` · ${numCites} citations` : '';
     lines.push(`- [${d.title}](${primary}) · ${authors} · ${venue}${cites}${summary}`);
     if (d.arxiv && d.arxiv !== primary) lines.push(`    - arXiv: ${d.arxiv}`);
     if (d.doi && d.doi !== primary) lines.push(`    - DOI: ${d.doi}`);
@@ -100,7 +111,9 @@ export const GET: APIRoute = async ({ site }) => {
   lines.push(`- RSS feed (notes): ${base}/rss.xml`);
   lines.push(`- Sitemap: ${base}/sitemap-index.xml`);
   lines.push('');
-  lines.push('*Citation counts and metrics reflect Google Scholar as of the last site build.*');
+  lines.push(
+    `*Citation counts and metrics reflect Google Scholar as of ${stats?.asOf ?? 'the last site build'}.*`,
+  );
   lines.push('');
 
   return new Response(lines.join('\n'), {

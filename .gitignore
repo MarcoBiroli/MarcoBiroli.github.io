@@ -1,6 +1,9 @@
 node_modules
 dist
 .astro
+.venv
+scholar_seed.json
+src/data/scholar.json.tmp
 .DS_Store
 .env
 .env.*

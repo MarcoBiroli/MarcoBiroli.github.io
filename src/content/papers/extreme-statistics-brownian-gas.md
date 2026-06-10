@@ -7,7 +7,7 @@ authors:
   - "Grégory Schehr"
 venue: "Physical Review Letters 130, 207101"
 year: 2023
-citations: 61
+scholar_id: "U4DVTL0AAAAJ:qjMakFHDy7sC"
 highlighted: true
 arxiv: "https://arxiv.org/abs/2211.00563"
 doi: "https://doi.org/10.1103/PhysRevLett.130.207101"

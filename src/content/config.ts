@@ -12,7 +12,7 @@ const papers = defineCollection({
     pdf: z.string().url().optional(),
     code: z.string().url().optional(),
     doi: z.string().url().optional(),
-    citations: z.number().optional(),
+    scholar_id: z.string().optional(),
     highlighted: z.boolean().default(false),
     summary: z.string().optional(),
   }),
@@ -29,4 +29,13 @@ const notes = defineCollection({
   }),
 });
 
-export const collections = { papers, notes };
+const news = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/news' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    link: z.string().url().optional(),
+  }),
+});
+
+export const collections = { papers, notes, news };

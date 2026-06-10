@@ -4,12 +4,16 @@ import Hero from '../components/Hero.astro';
 import Plate from '../components/Plate.astro';
 import ResearchThreads from '../components/ResearchThreads.astro';
 import Currently from '../components/Currently.astro';
+import News from '../components/News.astro';
 import PaperEntry from '../components/PaperEntry.astro';
 import { getCollection } from 'astro:content';
+import { scholarInfoFor, scholarStats } from '../lib/scholar';
 
 const papers = (await getCollection('papers')).sort(
   (a, b) => b.data.year - a.data.year,
 );
+const scholarMap = scholarInfoFor(papers);
+const stats = scholarStats();
 
 const NUMBER_WORDS = [
   'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
@@ -72,14 +76,23 @@ const personJsonLd = {
   <Plate />
   <ResearchThreads />
   <Currently />
+  <News />
 
   <section id="papers" class="pubs">
     <div class="hd">
       <div class="label">— Publications</div>
       <h2>{inWords(papers.length)} <em>papers</em>, reverse chronological.</h2>
     </div>
+    {stats && (
+      <p class="scholar-line">
+        {stats.total.toLocaleString('en-US')} citations &nbsp;·&nbsp; h-index {stats.hIndex}
+        <span class="asof"> — Google Scholar, {stats.asOf}</span>
+      </p>
+    )}
     <div class="list">
-      {papers.map((paper) => <PaperEntry paper={paper} />)}
+      {papers.map((paper) => (
+        <PaperEntry paper={paper} scholar={scholarMap.get(paper.id)} />
+      ))}
     </div>
   </section>
 

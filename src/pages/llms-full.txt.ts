@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { scholarInfoFor, scholarStats } from '../lib/scholar';
 
 function stripMdxDirectives(body: string): string {
   return body
@@ -18,7 +19,12 @@ export const GET: APIRoute = async ({ site }) => {
   );
   const base = site?.toString().replace(/\/$/, '') ?? 'https://marcobiroli.github.io';
 
-  const totalCitations = papers.reduce((s, p) => s + (p.data.citations ?? 0), 0);
+  const scholarMap = scholarInfoFor(papers);
+  const stats = scholarStats();
+  const citesOf = (p: (typeof papers)[number]) => scholarMap.get(p.id)?.citations;
+  const mostCited = [...papers].sort(
+    (a, b) => (citesOf(b) ?? 0) - (citesOf(a) ?? 0),
+  )[0];
 
   const parts: string[] = [
     '# Marco Biroli — full site content',
@@ -58,8 +64,16 @@ export const GET: APIRoute = async ({ site }) => {
     '## Bibliometric snapshot',
     '',
     `- ${papers.length} peer-reviewed / preprint publications.`,
-    `- ~${totalCitations} total citations; h-index 8; i10-index 7 (Google Scholar, April 2026).`,
-    '- Most-cited paper: *Extreme statistics and spacing distribution in a Brownian gas correlated by resetting*, Phys. Rev. Lett. 130, 207101 (2023) — 61 citations.',
+    ...(stats
+      ? [
+          `- ${stats.total} total citations; h-index ${stats.hIndex}; i10-index ${stats.i10} (Google Scholar, ${stats.asOf}).`,
+        ]
+      : []),
+    ...(mostCited && (citesOf(mostCited) ?? 0) > 0
+      ? [
+          `- Most-cited paper: *${mostCited.data.title}*, ${mostCited.data.venue} (${mostCited.data.year}) — ${citesOf(mostCited)} citations.`,
+        ]
+      : []),
     '',
     '## Frequent collaborators',
     '',
@@ -91,7 +105,8 @@ export const GET: APIRoute = async ({ site }) => {
     parts.push('');
     parts.push(`- Authors: ${d.authors.join(', ')}`);
     parts.push(`- Venue: ${d.venue}, ${d.year}`);
-    if (d.citations != null) parts.push(`- Citations: ${d.citations}`);
+    const cites = citesOf(p);
+    if (cites != null && cites > 0) parts.push(`- Citations: ${cites}`);
     if (d.doi) parts.push(`- DOI: ${d.doi}`);
     if (d.arxiv) parts.push(`- arXiv: ${d.arxiv}`);
     if (d.code) parts.push(`- Code: ${d.code}`);
@@ -119,7 +134,9 @@ export const GET: APIRoute = async ({ site }) => {
   }
 
   parts.push('---');
-  parts.push('*All bibliometric data reflect Google Scholar at the time of the last site build.*');
+  parts.push(
+    `*All bibliometric data reflect Google Scholar as of ${stats?.asOf ?? 'the time of the last site build'}.*`,
+  );
   parts.push('');
 
   return new Response(parts.join('\n'), {
