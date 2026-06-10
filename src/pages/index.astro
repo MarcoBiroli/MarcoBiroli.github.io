@@ -15,16 +15,6 @@ const papers = (await getCollection('papers')).sort(
 const scholarMap = scholarInfoFor(papers);
 const stats = scholarStats();
 
-const NUMBER_WORDS = [
-  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
-  'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
-  'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty',
-];
-function inWords(n: number): string {
-  const w = NUMBER_WORDS[n];
-  return w ? w.charAt(0).toUpperCase() + w.slice(1) : String(n);
-}
-
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -80,8 +70,7 @@ const personJsonLd = {
 
   <section id="papers" class="pubs">
     <div class="hd">
-      <div class="label">— Publications</div>
-      <h2>{inWords(papers.length)} <em>papers</em>, reverse chronological.</h2>
+      <h2>Publications</h2>
     </div>
     {stats && (
       <p class="scholar-line">
@@ -97,7 +86,9 @@ const personJsonLd = {
   </section>
 
   <section class="contact">
-    <p class="lead">Get in <em>touch</em>.</p>
+    <div class="hd">
+      <h2>Contact</h2>
+    </div>
     <p class="body">
       I'm happy to hear from anyone working on correlated noise, exact results,
       or the statistical physics of learning. Email is fastest.

@@ -53,13 +53,12 @@ const threads = [
 ---
 <section id="work">
   <div class="hd">
-    <div class="label">— Lines of work</div>
-    <h2>Three threads, <em>one question</em>.</h2>
+    <h2>Research</h2>
   </div>
   <div class="threads">
     {threads.map((t) => (
       <div class={`t ${t.primary ? 'primary' : ''}`}>
-        <div class="n">{t.primary ? '' : ''}{t.number} — {t.label.toUpperCase()}</div>
+        <div class="n">{t.number} — {t.label.toUpperCase()}</div>
         <h3 set:html={t.title}></h3>
         <p>{t.body}</p>
         <div class="papers">
