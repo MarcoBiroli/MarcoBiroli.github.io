@@ -6,6 +6,12 @@ into the papers pages. On any fetch failure or implausible data the script
 exits non-zero WITHOUT touching the file, so the last-known-good numbers
 keep serving.
 
+Backends:
+  - SerpAPI (used automatically when the SERPAPI_KEY env var is set) —
+    reliable from CI; Google Scholar blocks GitHub-runner IPs directly.
+  - scholarly (no key needed) — works from residential IPs / local runs,
+    and is required for --bootstrap.
+
 Usage:
   python scripts/fetch_scholar.py                # refresh scholar.json
   python scripts/fetch_scholar.py --bootstrap    # also dump scholar_seed.json
@@ -18,9 +24,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import signal
 import sys
 import time
+import urllib.parse
+import urllib.request
 from datetime import date
 from pathlib import Path
 
@@ -82,8 +91,65 @@ def _fetch_with_retries(author_id: str) -> dict:
                 wait = BACKOFF_S[min(attempt - 1, len(BACKOFF_S) - 1)]
                 print(f"[scholar] retrying in {wait}s", file=sys.stderr)
                 time.sleep(wait)
-    print(f"[scholar] giving up after {ATTEMPTS} attempts: {last!r}", file=sys.stderr)
-    sys.exit(1)
+    raise RuntimeError(f"scholarly gave up after {ATTEMPTS} attempts: {last!r}")
+
+
+def _fetch_serpapi_payload(author_id: str, api_key: str) -> dict:
+    """Google Scholar Author API via SerpAPI — one request, stdlib only."""
+    params = urllib.parse.urlencode(
+        {
+            "engine": "google_scholar_author",
+            "author_id": author_id,
+            "api_key": api_key,
+            "num": 100,
+            "hl": "en",
+        }
+    )
+    url = f"https://serpapi.com/search.json?{params}"
+    with urllib.request.urlopen(url, timeout=60) as response:
+        data = json.load(response)
+    if data.get("error"):
+        raise RuntimeError(f"SerpAPI error: {data['error']}")
+
+    table = (data.get("cited_by") or {}).get("table") or []
+
+    def metric(name: str) -> int:
+        for row in table:
+            if name in row:
+                return int(row[name].get("all") or 0)
+        return 0
+
+    pubs = []
+    for article in data.get("articles") or []:
+        pub_id = article.get("citation_id")
+        if not pub_id:
+            continue
+        try:
+            year = int(article.get("year"))
+        except (TypeError, ValueError):
+            year = None
+        pubs.append(
+            {
+                "id": pub_id,
+                "title": article.get("title", ""),
+                "year": year,
+                "num_citations": int((article.get("cited_by") or {}).get("value") or 0),
+            }
+        )
+    pubs.sort(key=lambda p: p["id"])
+    graph = {
+        str(point["year"]): int(point.get("citations") or 0)
+        for point in (data.get("cited_by") or {}).get("graph") or []
+        if point.get("year") is not None
+    }
+    return {
+        "fetched_at": date.today().isoformat(),
+        "citations_total": metric("citations"),
+        "h_index": metric("h_index"),
+        "i10_index": metric("i10_index"),
+        "citations_per_year": graph,
+        "publications": pubs,
+    }
 
 
 def _build_payload(author: dict) -> dict:
@@ -197,8 +263,27 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    author = _fetch_with_retries(args.author)
-    payload = _build_payload(author)
+    api_key = os.environ.get("SERPAPI_KEY")
+    author = None
+    payload = None
+
+    if api_key and not args.bootstrap:
+        print("[scholar] using SerpAPI backend")
+        try:
+            payload = _fetch_serpapi_payload(args.author, api_key)
+        except Exception as exc:
+            print(
+                f"[scholar] SerpAPI failed ({exc!r}); falling back to scholarly",
+                file=sys.stderr,
+            )
+
+    if payload is None:
+        try:
+            author = _fetch_with_retries(args.author)
+        except RuntimeError as exc:
+            print(f"[scholar] {exc}", file=sys.stderr)
+            sys.exit(1)
+        payload = _build_payload(author)
 
     prev = None
     if args.output.exists():
@@ -225,6 +310,9 @@ def main() -> None:
     )
 
     if args.bootstrap:
+        if author is None:
+            print("[scholar] --bootstrap requires the scholarly backend", file=sys.stderr)
+            sys.exit(1)
         seed = _bootstrap_seed(author)
         _write_json(SEED_OUTPUT, seed)
         print(

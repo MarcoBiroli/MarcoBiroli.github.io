@@ -33,6 +33,10 @@ jobs:
           python-version: '3.12'
       - run: pip install -r scripts/requirements.txt
       - run: python scripts/fetch_scholar.py
+        env:
+          # Scholar blocks GitHub-runner IPs; with this secret set the script
+          # uses SerpAPI (free tier: 100 req/month, weekly sync uses ~4).
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
       - id: commit
         run: |
           if [ -n "$(git status --porcelain -- src/data/scholar.json)" ]; then

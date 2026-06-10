@@ -31,6 +31,12 @@ Citation counts come from Google Scholar, not from frontmatter:
 - The weekly `sync-scholar` job in `deploy.yml` (Mondays 05:17 UTC, or
   Actions → "Deploy to GitHub Pages" → Run workflow) commits the refreshed
   JSON and redeploys. A failed fetch turns the run red — nothing breaks.
+- **CI needs the `SERPAPI_KEY` repo secret**: Google Scholar blocks
+  GitHub-runner IPs (verified 2026-06-10), so in CI the script uses the
+  SerpAPI Google Scholar Author API. Free plan (serpapi.com) allows
+  100 requests/month; the weekly sync uses ~4. Set it with
+  `gh secret set SERPAPI_KEY`. Without it, weekly runs will usually fail
+  (red + email) while the site keeps last-known-good numbers.
 - At build time `src/lib/scholar.ts` merges the JSON into the papers pages
   (badges + totals) by `scholar_id`, falling back to title match; papers on
   Scholar that are missing from `src/content/papers/` show up as build
