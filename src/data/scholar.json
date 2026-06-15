@@ -3,11 +3,11 @@
     "2022": 8,
     "2023": 17,
     "2024": 35,
-    "2025": 93,
-    "2026": 84
+    "2025": 90,
+    "2026": 87
   },
   "citations_total": 239,
-  "fetched_at": "2026-06-10",
+  "fetched_at": "2026-06-15",
   "h_index": 8,
   "i10_index": 8,
   "publications": [
@@ -70,6 +70,12 @@
       "num_citations": 1,
       "title": "Strongly correlated stochastic systems",
       "year": 2025
+    },
+    {
+      "id": "U4DVTL0AAAAJ:kNdYIx-mwKoC",
+      "num_citations": 0,
+      "title": "Discovering and decoding latent mean-field structure with variational autoencoders",
+      "year": 2026
     },
     {
       "id": "U4DVTL0AAAAJ:qjMakFHDy7sC",
