@@ -3,11 +3,11 @@
     "2022": 8,
     "2023": 17,
     "2024": 35,
-    "2025": 90,
-    "2026": 87
+    "2025": 93,
+    "2026": 86
   },
-  "citations_total": 239,
-  "fetched_at": "2026-06-15",
+  "citations_total": 241,
+  "fetched_at": "2026-06-22",
   "h_index": 8,
   "i10_index": 8,
   "publications": [
@@ -31,7 +31,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:Se3iqnhoufwC",
-      "num_citations": 14,
+      "num_citations": 15,
       "title": "Resetting dyson brownian motion",
       "year": 2025
     },
@@ -79,7 +79,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:qjMakFHDy7sC",
-      "num_citations": 67,
+      "num_citations": 68,
       "title": "Extreme statistics and spacing distribution in a Brownian gas correlated by resetting",
       "year": 2023
     },
