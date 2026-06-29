@@ -3,11 +3,11 @@
     "2022": 8,
     "2023": 17,
     "2024": 35,
-    "2025": 93,
-    "2026": 86
+    "2025": 89,
+    "2026": 91
   },
-  "citations_total": 241,
-  "fetched_at": "2026-06-22",
+  "citations_total": 242,
+  "fetched_at": "2026-06-29",
   "h_index": 8,
   "i10_index": 8,
   "publications": [
@@ -19,7 +19,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:2osOgNQ5qMEC",
-      "num_citations": 30,
+      "num_citations": 29,
       "title": "Critical number of walkers for diffusive search processes with resetting",
       "year": 2023
     },
@@ -43,13 +43,13 @@
     },
     {
       "id": "U4DVTL0AAAAJ:UebtZRa9Y70C",
-      "num_citations": 7,
+      "num_citations": 8,
       "title": "Experimental evidence for strong emergent correlations between particles in a switching trap",
       "year": 2025
     },
     {
       "id": "U4DVTL0AAAAJ:W7OEmFMy1HYC",
-      "num_citations": 12,
+      "num_citations": 13,
       "title": "Resetting by rescaling: Exact results for a diffusing particle in one dimension",
       "year": 2024
     },
