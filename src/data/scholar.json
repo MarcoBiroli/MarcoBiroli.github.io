@@ -3,11 +3,11 @@
     "2022": 8,
     "2023": 17,
     "2024": 35,
-    "2025": 88,
-    "2026": 106
+    "2025": 89,
+    "2026": 109
   },
-  "citations_total": 256,
-  "fetched_at": "2026-07-13",
+  "citations_total": 260,
+  "fetched_at": "2026-07-20",
   "h_index": 9,
   "i10_index": 9,
   "publications": [
@@ -19,13 +19,13 @@
     },
     {
       "id": "U4DVTL0AAAAJ:2osOgNQ5qMEC",
-      "num_citations": 30,
+      "num_citations": 31,
       "title": "Critical number of walkers for diffusive search processes with resetting",
       "year": 2023
     },
     {
       "id": "U4DVTL0AAAAJ:MXK_kJrjxJIC",
-      "num_citations": 5,
+      "num_citations": 6,
       "title": "First-passage resetting gas",
       "year": 2026
     },
@@ -49,7 +49,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:W7OEmFMy1HYC",
-      "num_citations": 14,
+      "num_citations": 15,
       "title": "Resetting by rescaling: Exact results for a diffusing particle in one dimension",
       "year": 2024
     },
@@ -79,7 +79,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:qjMakFHDy7sC",
-      "num_citations": 70,
+      "num_citations": 71,
       "title": "Extreme statistics and spacing distribution in a Brownian gas correlated by resetting",
       "year": 2023
     },
