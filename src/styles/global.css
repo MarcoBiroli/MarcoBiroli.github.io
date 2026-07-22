@@ -443,6 +443,23 @@ footer.col a:hover { color: var(--accent); }
 }
 .article p { margin: 0 0 1em; max-width: 62ch; }
 .article hr { border: none; border-top: 1px solid var(--rule); margin: 2rem 0; }
+/* in-text links (citations) — visible underline so they read as clickable */
+.article p a,
+.article li a,
+.article blockquote a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-dim);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.article p a:hover,
+.article li a:hover,
+.article blockquote a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
 .article ul, .article ol { max-width: 62ch; }
 .article code {
   font-family: var(--font-mono);
