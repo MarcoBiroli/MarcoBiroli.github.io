@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const latest = notes.slice(0, 3);
+---
+<section id="notes">
+  <div class="hd">
+    <h2>Notes</h2>
+  </div>
+  <div class="note-list">
+    {latest.map((n) => (
+      <article>
+        <div class="date">{n.data.date.toISOString().slice(0, 10)}</div>
+        <div>
+          <h3><a href={`/notes/${n.id}`}>{n.data.title}</a></h3>
+          <p>{n.data.summary}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+  <div class="section-more">
+    <a href="/notes">all notes →</a>
+  </div>
+</section>

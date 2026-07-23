@@ -486,6 +486,41 @@ footer.col a:hover { color: var(--accent); }
 .article .post-nav a { color: var(--muted); }
 .article .post-nav a:hover { color: var(--accent); }
 
+/* ===== Note margin line art ===== */
+.note-wrap { display: grid; grid-template-columns: minmax(0, 1fr); }
+.margin-art { display: none; }
+@media (min-width: 1100px) {
+  .note-wrap {
+    grid-template-columns: minmax(0, 720px) 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .margin-art { display: block; height: 100%; }
+  .margin-art .inner {
+    position: sticky;
+    top: 0;
+    padding: 50px 0 24px;
+    height: min(100vh, 940px);
+    display: flex;
+    flex-direction: column;
+  }
+  .margin-art svg {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    display: block;
+  }
+  .margin-art .trace {
+    fill: none;
+    stroke: var(--figure-trace);
+    stroke-width: 1;
+    opacity: 0.22;
+  }
+}
+@media print {
+  .margin-art { display: none; }
+}
+
 .note-list { border-top: 1px solid var(--rule-strong); }
 .note-list article {
   display: grid;
@@ -513,6 +548,16 @@ footer.col a:hover { color: var(--accent); }
 @media (max-width: 720px) {
   .note-list article { grid-template-columns: 1fr; gap: 4px; }
 }
+
+.section-more {
+  margin-top: 18px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.section-more a { color: var(--muted); transition: color 0.15s; }
+.section-more a:hover { color: var(--accent); }
 
 /* ===== KaTeX tweaks ===== */
 .katex-display { overflow-x: auto; overflow-y: hidden; padding: 0.3rem 0; }

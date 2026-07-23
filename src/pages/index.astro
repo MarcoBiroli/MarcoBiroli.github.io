@@ -5,6 +5,7 @@ import Plate from '../components/Plate.astro';
 import ResearchThreads from '../components/ResearchThreads.astro';
 import Currently from '../components/Currently.astro';
 import News from '../components/News.astro';
+import NotesList from '../components/NotesList.astro';
 import PaperEntry from '../components/PaperEntry.astro';
 import { getCollection } from 'astro:content';
 import { scholarInfoFor, scholarStats } from '../lib/scholar';
@@ -67,6 +68,7 @@ const personJsonLd = {
   <ResearchThreads />
   <Currently />
   <News />
+  <NotesList />
 
   <section id="papers" class="pubs">
     <div class="hd">
