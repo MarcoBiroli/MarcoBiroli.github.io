@@ -4,10 +4,10 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 133
+    "2026": 134
   },
-  "citations_total": 277,
-  "fetched_at": "2026-08-17",
+  "citations_total": 278,
+  "fetched_at": "2026-08-24",
   "h_index": 9,
   "i10_index": 9,
   "publications": [
@@ -85,7 +85,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:qjMakFHDy7sC",
-      "num_citations": 73,
+      "num_citations": 74,
       "title": "Extreme statistics and spacing distribution in a Brownian gas correlated by resetting",
       "year": 2023
     },
