@@ -4,10 +4,10 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 134
+    "2026": 135
   },
-  "citations_total": 278,
-  "fetched_at": "2026-08-24",
+  "citations_total": 279,
+  "fetched_at": "2026-08-31",
   "h_index": 9,
   "i10_index": 9,
   "publications": [
@@ -31,7 +31,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:MXK_kJrjxJIC",
-      "num_citations": 8,
+      "num_citations": 9,
       "title": "First-passage resetting gas",
       "year": 2026
     },
