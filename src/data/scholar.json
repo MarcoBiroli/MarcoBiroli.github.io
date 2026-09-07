@@ -4,12 +4,12 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 135
+    "2026": 138
   },
-  "citations_total": 279,
-  "fetched_at": "2026-08-31",
-  "h_index": 9,
-  "i10_index": 9,
+  "citations_total": 282,
+  "fetched_at": "2026-09-07",
+  "h_index": 10,
+  "i10_index": 10,
   "publications": [
     {
       "id": "U4DVTL0AAAAJ:0EnyYjriUFMC",
@@ -31,7 +31,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:MXK_kJrjxJIC",
-      "num_citations": 9,
+      "num_citations": 10,
       "title": "First-passage resetting gas",
       "year": 2026
     },
@@ -49,7 +49,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:UebtZRa9Y70C",
-      "num_citations": 13,
+      "num_citations": 15,
       "title": "Experimental evidence for strong emergent correlations between particles in a switching trap",
       "year": 2026
     },
