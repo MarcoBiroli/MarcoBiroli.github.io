@@ -4,22 +4,22 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 138
+    "2026": 149
   },
-  "citations_total": 282,
-  "fetched_at": "2026-09-21",
+  "citations_total": 293,
+  "fetched_at": "2026-09-28",
   "h_index": 10,
   "i10_index": 10,
   "publications": [
     {
       "id": "U4DVTL0AAAAJ:0EnyYjriUFMC",
-      "num_citations": 14,
+      "num_citations": 16,
       "title": "Dynamically emergent correlations in Brownian particles subject to simultaneous non-Poissonian resetting protocols",
       "year": 2026
     },
     {
       "id": "U4DVTL0AAAAJ:2osOgNQ5qMEC",
-      "num_citations": 31,
+      "num_citations": 33,
       "title": "Critical number of walkers for diffusive search processes with resetting",
       "year": 2023
     },
@@ -31,7 +31,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:MXK_kJrjxJIC",
-      "num_citations": 10,
+      "num_citations": 11,
       "title": "First-passage resetting gas",
       "year": 2026
     },
@@ -43,25 +43,25 @@
     },
     {
       "id": "U4DVTL0AAAAJ:Tyk-4Ss8FVUC",
-      "num_citations": 35,
+      "num_citations": 36,
       "title": "Dynamically emergent correlations between particles in a switching harmonic trap",
       "year": 2024
     },
     {
       "id": "U4DVTL0AAAAJ:UebtZRa9Y70C",
-      "num_citations": 15,
+      "num_citations": 16,
       "title": "Experimental evidence for strong emergent correlations between particles in a switching trap",
       "year": 2026
     },
     {
       "id": "U4DVTL0AAAAJ:W7OEmFMy1HYC",
-      "num_citations": 16,
+      "num_citations": 17,
       "title": "Resetting by rescaling: Exact results for a diffusing particle in one dimension",
       "year": 2024
     },
     {
       "id": "U4DVTL0AAAAJ:Y0pCki6q_DkC",
-      "num_citations": 29,
+      "num_citations": 30,
       "title": "Exact extreme, order, and sum statistics in a class of strongly correlated systems",
       "year": 2024
     },
@@ -85,7 +85,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:qjMakFHDy7sC",
-      "num_citations": 74,
+      "num_citations": 76,
       "title": "Extreme statistics and spacing distribution in a Brownian gas correlated by resetting",
       "year": 2023
     },
