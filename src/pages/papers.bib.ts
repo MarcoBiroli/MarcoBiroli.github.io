@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { getSortedPapers } from '../lib/papers';
 
 function surname(fullName: string): string {
   const cleaned = fullName.replace(/[.,]/g, '').trim();
@@ -38,9 +38,7 @@ function extractDoi(url?: string): string | undefined {
 }
 
 export const GET: APIRoute = async () => {
-  const papers = (await getCollection('papers')).sort(
-    (a, b) => b.data.year - a.data.year,
-  );
+  const papers = await getSortedPapers();
   const entries: string[] = [];
 
   for (const p of papers) {

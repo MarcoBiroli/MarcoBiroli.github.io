@@ -7,9 +7,9 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
 );
 ---
 <BaseLayout title="Notes — Marco Biroli">
-  <section class="no-rule" style="padding-top: 50px;">
+  <section class="no-rule page-head">
     <div class="hd">
-      <h2>Notes</h2>
+      <h1>Notes</h1>
     </div>
     <div class="note-list">
       {notes.map((n) => (

@@ -1,11 +1,10 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { getSortedPapers } from '../lib/papers';
 import { scholarInfoFor, scholarStats } from '../lib/scholar';
 
 export const GET: APIRoute = async ({ site }) => {
-  const papers = (await getCollection('papers')).sort(
-    (a, b) => b.data.year - a.data.year,
-  );
+  const papers = await getSortedPapers();
   const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
     (a, b) => b.data.date.getTime() - a.data.date.getTime(),
   );
@@ -65,20 +64,25 @@ export const GET: APIRoute = async ({ site }) => {
     '- Satya N. Majumdar (LPTMS, CNRS) — PhD advisor; co-author on most papers.',
     '- Grégory Schehr (LPT, Sorbonne Université) — co-author on most papers.',
     '- Hernán Larralde (UNAM) — co-author on the 2023 PRL and the 2024 PRE on exact extreme/order/sum statistics.',
-    '- Manas Kulkarni (ICTS-TIFR) — switching-trap papers (PRE 2024, arXiv 2508.07199).',
-    '- Sergio Ciliberto and Artyom Petrosyan (ENS Lyon) — experimental paper on emergent correlations in a switching trap (arXiv 2508.07199, 2025).',
+    '- Manas Kulkarni (ICTS-TIFR) — switching-trap papers (PRE 2024, PRL 2026).',
+    '- Sergio Ciliberto and Artyom Petrosyan (ENS Lyon) — experimental paper on emergent correlations in a switching trap (PRL 137, 037102, 2026).',
+    '- Max Welling (University of Amsterdam) and Vincenzo Vitelli (University of Chicago) — VAE / latent mean-field paper (arXiv:2606.08694, 2026).',
     '- Francesco Mori (Oxford) — resetting random walker (J. Phys. A 2022).',
     '- Alexander K. Hartmann and Yannick Feld (Oldenburg) — resetting by rescaling (PRE 2024).',
     '',
     '## Machine-learning direction',
     '',
-    'A post-PhD research direction, developed during the UChicago postdoc, distinct from the PhD thesis topics (which centred on stochastic resetting and correlated particle systems). Anchored by an in-progress preprint, *Variational autoencoders are finite-size mean-field models of correlated systems* (2026). Main result: the conditional-independence assumption built into every VAE decoder — p_θ(x | z) = Π_i p(x_i | z) — is formally equivalent to the finite-size mean-field factorization in statistical physics (keeping the latent variable stochastic rather than collapsing it via saddle-point). Consequences derived in the paper:',
+    'A post-PhD research direction, developed during the UChicago postdoc, distinct from the PhD thesis topics (which centred on stochastic resetting and correlated particle systems). Anchored by the preprint *Discovering and decoding latent mean-field structure with variational autoencoders* (Biroli, Welling & Vitelli, 2026, arXiv:2606.08694). Main result: the conditional-independence assumption built into every VAE decoder — p_θ(x | z) = Π_i p(x_i | z) — is formally equivalent to the finite-size mean-field factorization in statistical physics (keeping the latent variable stochastic rather than collapsing it via saddle-point). Consequences derived in the paper:',
     '',
     '1. A criterion for when VAEs can fully recover a joint distribution p(x): only when p(x) admits a mean-field description.',
     '2. A concrete failure case: a VAE trained on 2D Ising samples cannot recover the sharp critical singularity at T_c ≈ 2.269, regardless of training.',
     '3. A use of VAEs as a test for the existence of a mean-field description of unknown data.',
     '',
-    'Validated on the 2D Ising model, the Curie–Weiss model, and retinal population recordings. Invited talk on this work: Schmidt AI in Science Speaker Series, University of Chicago Data Science Institute, March 2026.',
+    'Validated on a hierarchy of solvable models with scalar, vector and tensor order parameters (Curie–Weiss, Hopfield, Maier–Saupe) — recovering the full Hopfield pattern matrix from equilibrium samples alone — and on salamander retinal recordings, where a two-latent VAE recovers the stored patterns of the neural population. Invited talk on this work: Schmidt AI in Science Speaker Series, University of Chicago Data Science Institute, March 2026.',
+    '',
+'## AI safety',
+    '',
+    'The same statistical-physics toolkit applied to the robustness of aligned language models. *Escaping alignment: a physical trap model of best-of-N jailbreaking* (2026, arXiv:2609.32116) models each jailbreak attempt as thermally activated escape: every prompt carries a baseline safety level and every augmentation a random barrier. Four interpretable parameters fix the full two-budget (N augmentations × M samples) attack surface, extrapolate attack success rates from N ≤ 100 to N = 10^4, collapse five distinct models onto one scaling function, and predict results at unseen generation temperatures. The apparent power-law scaling of attack success in N reported previously is shown to be a finite-size artifact of the adversarial dataset.',
     '',
     '## Publications',
     '',

@@ -1,15 +1,25 @@
 ---
 ---
-<button id="theme-toggle" type="button" aria-label="Toggle color scheme" class="theme-toggle">
+<button id="theme-toggle" type="button" aria-label="Dark theme" aria-pressed="false" class="theme-toggle">
   <span aria-hidden="true">◐</span>
 </button>
 <script>
+  const THEME_COLOR = { light: '#f4f5f4', dark: '#0e1116' } as const;
   const btn = document.getElementById('theme-toggle');
+  const sync = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    btn?.setAttribute('aria-pressed', String(dark));
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', dark ? THEME_COLOR.dark : THEME_COLOR.light);
+  };
+  sync();
   btn?.addEventListener('click', () => {
     const curr = document.documentElement.dataset.theme;
     const next = curr === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch {}
+    sync();
     document.dispatchEvent(new CustomEvent('theme-change', { detail: { theme: next } }));
   });
 </script>

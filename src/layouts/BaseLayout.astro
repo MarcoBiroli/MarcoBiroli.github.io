@@ -39,6 +39,7 @@ const canonical = Astro.site
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f5f4" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
@@ -64,6 +65,9 @@ const canonical = Astro.site
           const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
           const theme = stored ?? (prefersDark ? 'dark' : 'light');
           document.documentElement.dataset.theme = theme;
+          if (theme === 'dark') {
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0e1116');
+          }
         } catch {
           document.documentElement.dataset.theme = 'light';
         }
@@ -71,9 +75,12 @@ const canonical = Astro.site
     </script>
   </head>
   <body>
+    <a class="skip-link" href="#main">Skip to content</a>
     <div class="page">
       <Header />
-      <slot />
+      <main id="main">
+        <slot />
+      </main>
       <Footer />
     </div>
   </body>

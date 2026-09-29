@@ -3,7 +3,12 @@
 <div class="plate">
   <div class="frame">
     <span class="fig-tag">Fig. 1 — resetting brownian gas</span>
-    <canvas id="fig-gas"></canvas>
+    <canvas
+      id="fig-gas"
+      role="img"
+      aria-label="Animated simulation: 40 Brownian trajectories that all return to the origin at random shared reset times"
+    ></canvas>
+    <button id="fig-gas-toggle" type="button" class="fig-ctrl" aria-pressed="false">pause</button>
   </div>
   <div class="cap">
     <span class="n">FIG. 1</span>
@@ -44,6 +49,7 @@
 
   type Handle = { destroy: () => void };
   let handle: Handle | null = null;
+  let paused = false;
 
   function startGas(): Handle {
     const canvas = document.getElementById('fig-gas') as HTMLCanvasElement | null;
@@ -145,6 +151,7 @@
     window.addEventListener('resize', onResize);
 
     if (reduceMotion) {
+      document.getElementById('fig-gas-toggle')?.setAttribute('hidden', '');
       for (let i = 0; i < 700; i++) step();
       render();
       return {
@@ -156,7 +163,7 @@
 
     function loop() {
       framePending = false;
-      if (!running || !visible || document.hidden) return;
+      if (!running || paused || !visible || document.hidden) return;
       step();
       render();
       schedule();
@@ -177,11 +184,22 @@
       if (!document.hidden) schedule();
     };
     document.addEventListener('visibilitychange', onVisibility);
+    if (paused) {
+      // restarted while paused (e.g. theme switch): draw a still frame
+      for (let i = 0; i < 700; i++) step();
+      render();
+    }
     schedule();
+
+    const onToggle = () => {
+      if (!paused) schedule();
+    };
+    document.addEventListener('fig-gas-toggle', onToggle);
 
     return {
       destroy() {
         running = false;
+        document.removeEventListener('fig-gas-toggle', onToggle);
         io.disconnect();
         document.removeEventListener('visibilitychange', onVisibility);
         window.removeEventListener('resize', onResize);
@@ -194,8 +212,15 @@
     handle = startGas();
   }
 
+  const toggle = document.getElementById('fig-gas-toggle');
+  toggle?.addEventListener('click', () => {
+    paused = !paused;
+    toggle.textContent = paused ? 'play' : 'pause';
+    toggle.setAttribute('aria-pressed', String(paused));
+    document.dispatchEvent(new Event('fig-gas-toggle'));
+  });
+
   restart();
-  document.addEventListener('theme-change', restart);
   const mo = new MutationObserver(restart);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 </script>

@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { getSortedPapers } from '../lib/papers';
 import { scholarInfoFor, scholarStats } from '../lib/scholar';
 
 function stripMdxDirectives(body: string): string {
@@ -11,9 +12,7 @@ function stripMdxDirectives(body: string): string {
 }
 
 export const GET: APIRoute = async ({ site }) => {
-  const papers = (await getCollection('papers')).sort(
-    (a, b) => b.data.year - a.data.year,
-  );
+  const papers = await getSortedPapers();
   const notes = (await getCollection('notes', ({ data }) => !data.draft)).sort(
     (a, b) => b.data.date.getTime() - a.data.date.getTime(),
   );
@@ -37,13 +36,15 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     '## Research areas',
     '',
-    'The throughline across Marco Biroli\'s work is exact results for strongly correlated stochastic systems — classes where analytical tractability survives despite non-trivial correlations, typically because a small set of hidden variables carries the correlation structure. Three active threads:',
+    'The throughline across Marco Biroli\'s work is exact results for strongly correlated stochastic systems — classes where analytical tractability survives despite non-trivial correlations, typically because a small set of hidden variables carries the correlation structure. Four active threads:',
     '',
-    '1. **Stochastic resetting and correlated particles.** N non-interacting Brownian particles on a line, all reset to a common point at Poisson times, become correlated through the shared reset event alone. Exact closed-form extreme-value, order, and spacing statistics follow (Biroli–Larralde–Majumdar–Schehr, PRL 2023). Subsequent works extend this to non-Poissonian resetting, first-passage–triggered resets, switching harmonic traps, and an experimental verification in 2025 (arXiv:2508.07199).',
+    '1. **Stochastic resetting and correlated particles.** N non-interacting Brownian particles on a line, all reset to a common point at Poisson times, become correlated through the shared reset event alone. Exact closed-form extreme-value, order, and spacing statistics follow (Biroli–Larralde–Majumdar–Schehr, PRL 2023). Subsequent works extend this to non-Poissonian resetting, first-passage–triggered resets, switching harmonic traps, and an experimental verification (Phys. Rev. Lett. 137, 037102, 2026; arXiv:2508.07199).',
     '',
     '2. **Random matrix theory under resetting.** Dyson Brownian motion of eigenvalues subject to collective resetting. Stationary density, extreme-eigenvalue statistics, and the crossover between repulsion- and reset-dominated regimes (Biroli–Majumdar–Schehr, PRE 2025).',
     '',
     '3. **Statistical physics of learning.** The VAE / mean-field equivalence described below.',
+    '',
+    '4. **AI safety.** A physical trap model of best-of-N jailbreaking (arXiv:2609.32116, 2026), described below.',
     '',
     '## Positions & training',
     '',
@@ -81,19 +82,24 @@ export const GET: APIRoute = async ({ site }) => {
     '- Grégory Schehr (LPT, Sorbonne Université) — co-author on the majority of papers.',
     '- Hernán Larralde (UNAM) — co-author on the 2023 PRL and on the 2024 PRE on exact extreme/order/sum statistics.',
     '- Manas Kulkarni (ICTS-TIFR) — switching-trap papers.',
-    '- Sergio Ciliberto and Artyom Petrosyan (ENS Lyon) — experimental paper on emergent correlations in a switching trap (arXiv 2508.07199, 2025).',
+    '- Sergio Ciliberto and Artyom Petrosyan (ENS Lyon) — experimental paper on emergent correlations in a switching trap (PRL 137, 037102, 2026).',
+    '- Max Welling (University of Amsterdam) and Vincenzo Vitelli (University of Chicago) — VAE / latent mean-field paper (arXiv:2606.08694, 2026).',
     '- Francesco Mori (Oxford) — resetting random walker (J. Phys. A 2022).',
     '- Alexander K. Hartmann and Yannick Feld (Oldenburg) — resetting by rescaling (PRE 2024).',
     '',
     '## Machine-learning direction — detail',
     '',
-    'This is a post-PhD research direction, pursued during the UChicago postdoc, distinct from the PhD thesis topics (which were stochastic resetting and correlated particle systems). Anchored by an in-progress preprint, *Variational autoencoders are finite-size mean-field models of correlated systems* (2026). Main result, taken directly from the paper:',
+    'This is a post-PhD research direction, pursued during the UChicago postdoc, distinct from the PhD thesis topics (which were stochastic resetting and correlated particle systems). Anchored by the preprint *Discovering and decoding latent mean-field structure with variational autoencoders* (Biroli, Welling & Vitelli, 2026, arXiv:2606.08694). Main result, taken directly from the paper:',
     '',
     '> The conditional-independence assumption p_θ(x | z) = Π_i p(x_i | z) that every VAE decoder makes is formally equivalent to the finite-size mean-field factorization of the joint distribution (keeping the latent h stochastic rather than collapsing it to ⟨h⟩ via saddle-point). Therefore a VAE can succeed in recovering p(x) only when p(x) admits a mean-field description.',
     '',
-    'The paper validates this on (i) the 2D Ising model, where VAEs necessarily fail to capture the critical singularity, (ii) the Curie–Weiss mean-field model, where they succeed, and (iii) retinal population recordings.',
+    'The preprint validates this on a hierarchy of solvable models with scalar, vector and tensor order parameters (Curie–Weiss, Hopfield, Maier–Saupe), recovering the full Hopfield pattern matrix from equilibrium samples alone, and on salamander retinal recordings, where a two-latent VAE recovers the stored patterns of the neural population. Genuinely correlated systems such as the 2D Ising model at criticality are the canonical failure case.',
     '',
     'This work was the subject of an invited talk at the University of Chicago Schmidt AI in Science Speaker Series, 3 March 2026.',
+    '',
+'## AI safety',
+    '',
+    'The same statistical-physics toolkit applied to the robustness of aligned language models. *Escaping alignment: a physical trap model of best-of-N jailbreaking* (2026, arXiv:2609.32116) models each jailbreak attempt as thermally activated escape: every prompt carries a baseline safety level and every augmentation a random barrier. Four interpretable parameters fix the full two-budget (N augmentations × M samples) attack surface, extrapolate attack success rates from N ≤ 100 to N = 10^4, collapse five distinct models onto one scaling function, and predict results at unseen generation temperatures. The apparent power-law scaling of attack success in N reported previously is shown to be a finite-size artifact of the adversarial dataset.',
     '',
     '## Publications',
     '',

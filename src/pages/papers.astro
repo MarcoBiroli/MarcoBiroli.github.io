@@ -1,21 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PaperEntry from '../components/PaperEntry.astro';
-import { getCollection } from 'astro:content';
+import { getSortedPapers } from '../lib/papers';
 import { scholarInfoFor, scholarStats, SCHOLAR_PROFILE_URL } from '../lib/scholar';
 
-const papers = (await getCollection('papers')).sort(
-  (a, b) => b.data.year - a.data.year,
-);
+const papers = await getSortedPapers();
 const scholarMap = scholarInfoFor(papers);
 const stats = scholarStats();
 ---
 <BaseLayout title="Papers — Marco Biroli">
-  <section class="pubs no-rule" style="padding-top: 50px;">
+  <section class="pubs no-rule page-head">
     <div class="hd">
-      <h2>Publications</h2>
+      <h1>Publications</h1>
     </div>
-    <p style="color: var(--muted); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 10px;">
+    <p class="meta-links">
       <a href={SCHOLAR_PROFILE_URL}>Google Scholar</a>
       &nbsp;·&nbsp; <a href="/papers.bib">BibTeX</a>
       &nbsp;·&nbsp; <a href="/llms.txt">llms.txt</a>

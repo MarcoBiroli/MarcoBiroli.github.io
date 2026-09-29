@@ -7,12 +7,10 @@ import Currently from '../components/Currently.astro';
 import News from '../components/News.astro';
 import NotesList from '../components/NotesList.astro';
 import PaperEntry from '../components/PaperEntry.astro';
-import { getCollection } from 'astro:content';
+import { getSortedPapers } from '../lib/papers';
 import { scholarInfoFor, scholarStats } from '../lib/scholar';
 
-const papers = (await getCollection('papers')).sort(
-  (a, b) => b.data.year - a.data.year,
-);
+const papers = await getSortedPapers();
 const scholarMap = scholarInfoFor(papers);
 const stats = scholarStats();
 
