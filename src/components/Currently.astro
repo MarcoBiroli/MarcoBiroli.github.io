@@ -6,20 +6,27 @@
   </div>
   <div class="card">
     <div class="txt">
-      <p class="lead">A VAE is a <em>mean-field model</em> in disguise.</p>
+      <p class="lead">A jailbreak is a particle <em>escaping a trap</em>.</p>
       <p>
-        The conditional-independence assumption baked into every VAE decoder —
-        <code>p<sub>θ</sub>(x | z) = Π<sub>i</sub> p(x<sub>i</sub> | z)</code> —
-        is formally equivalent to a finite-size mean-field factorization.
+        Best-of-<em>N</em> jailbreaking breaks an aligned model by brute force:
+        draw <em>N</em> random augmentations of an unsafe prompt, sample
+        <em>M</em> completions of each, and keep whatever gets through. Its
+        success rate has been reported to follow a power law in <em>N</em>. We
+        think it doesn't. The drifting exponent is a finite-size artifact of
+        the adversarial dataset and relatively narrow fitting windows.
       </p>
       <p>
-        The consequence: a VAE perfectly recovers Curie–Weiss systems, but
-        structurally fails on genuinely correlated ones. Trained on 2D Ising
-        samples, it smears out the sharp singularity at
-        <em>T</em><sub>c</sub> ≈ 2.27. No amount of training recovers it.
+        We introduce a physically motivated barrier model with stochastic
+        dynamics. Each prompt has a baseline safety
+        level, and each augmentation adds a random, thermally activated
+        barrier. Four interpretable numbers then fix the entire
+        (<em>N</em>, <em>M</em>) attack surface. They extrapolate from
+        <em>N</em> ≤ 100 to <em>N</em> = 10<sup>4</sup>, collapse five models
+        onto one scaling function, and predict attacks at temperatures they
+        were never fitted on.
       </p>
       <p class="more">
-        <a href="https://arxiv.org/abs/2606.08694">Read the preprint →</a>
+        <a href="https://arxiv.org/abs/2609.32116">Read the preprint →</a>
       </p>
     </div>
   </div>
