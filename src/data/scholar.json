@@ -4,16 +4,16 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 157
+    "2026": 158
   },
-  "citations_total": 301,
-  "fetched_at": "2026-10-05",
+  "citations_total": 302,
+  "fetched_at": "2026-10-12",
   "h_index": 10,
   "i10_index": 10,
   "publications": [
     {
       "id": "U4DVTL0AAAAJ:0EnyYjriUFMC",
-      "num_citations": 17,
+      "num_citations": 18,
       "title": "Dynamically emergent correlations in Brownian particles subject to simultaneous non-Poissonian resetting protocols",
       "year": 2026
     },
