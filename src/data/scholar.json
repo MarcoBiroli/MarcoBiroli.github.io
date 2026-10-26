@@ -4,10 +4,10 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 162
+    "2026": 163
   },
-  "citations_total": 306,
-  "fetched_at": "2026-10-19",
+  "citations_total": 307,
+  "fetched_at": "2026-10-26",
   "h_index": 10,
   "i10_index": 10,
   "publications": [
@@ -19,7 +19,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:2osOgNQ5qMEC",
-      "num_citations": 33,
+      "num_citations": 34,
       "title": "Critical number of walkers for diffusive search processes with resetting",
       "year": 2023
     },
