@@ -4,16 +4,16 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 171
+    "2026": 175
   },
-  "citations_total": 315,
-  "fetched_at": "2026-11-02",
+  "citations_total": 319,
+  "fetched_at": "2026-11-09",
   "h_index": 10,
   "i10_index": 10,
   "publications": [
     {
       "id": "U4DVTL0AAAAJ:0EnyYjriUFMC",
-      "num_citations": 19,
+      "num_citations": 20,
       "title": "Dynamically emergent correlations in Brownian particles subject to simultaneous non-Poissonian resetting protocols",
       "year": 2026
     },
@@ -43,7 +43,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:Tyk-4Ss8FVUC",
-      "num_citations": 39,
+      "num_citations": 40,
       "title": "Dynamically emergent correlations between particles in a switching harmonic trap",
       "year": 2024
     },
@@ -55,7 +55,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:W7OEmFMy1HYC",
-      "num_citations": 18,
+      "num_citations": 19,
       "title": "Resetting by rescaling: Exact results for a diffusing particle in one dimension",
       "year": 2024
     },
@@ -91,7 +91,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:qjMakFHDy7sC",
-      "num_citations": 79,
+      "num_citations": 80,
       "title": "Extreme statistics and spacing distribution in a Brownian gas correlated by resetting",
       "year": 2023
     },
