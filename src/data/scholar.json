@@ -4,16 +4,16 @@
     "2023": 17,
     "2024": 35,
     "2025": 82,
-    "2026": 175
+    "2026": 184
   },
-  "citations_total": 319,
-  "fetched_at": "2026-11-16",
+  "citations_total": 328,
+  "fetched_at": "2026-11-23",
   "h_index": 10,
   "i10_index": 10,
   "publications": [
     {
       "id": "U4DVTL0AAAAJ:0EnyYjriUFMC",
-      "num_citations": 20,
+      "num_citations": 22,
       "title": "Dynamically emergent correlations in Brownian particles subject to simultaneous non-Poissonian resetting protocols",
       "year": 2026
     },
@@ -31,7 +31,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:MXK_kJrjxJIC",
-      "num_citations": 14,
+      "num_citations": 15,
       "title": "First-passage resetting gas",
       "year": 2026
     },
@@ -43,13 +43,13 @@
     },
     {
       "id": "U4DVTL0AAAAJ:Tyk-4Ss8FVUC",
-      "num_citations": 40,
+      "num_citations": 41,
       "title": "Dynamically emergent correlations between particles in a switching harmonic trap",
       "year": 2024
     },
     {
       "id": "U4DVTL0AAAAJ:UebtZRa9Y70C",
-      "num_citations": 19,
+      "num_citations": 21,
       "title": "Experimental evidence for strong emergent correlations between particles in a switching trap",
       "year": 2026
     },
@@ -61,7 +61,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:Y0pCki6q_DkC",
-      "num_citations": 31,
+      "num_citations": 33,
       "title": "Exact extreme, order, and sum statistics in a class of strongly correlated systems",
       "year": 2024
     },
@@ -91,7 +91,7 @@
     },
     {
       "id": "U4DVTL0AAAAJ:qjMakFHDy7sC",
-      "num_citations": 80,
+      "num_citations": 81,
       "title": "Extreme statistics and spacing distribution in a Brownian gas correlated by resetting",
       "year": 2023
     },
