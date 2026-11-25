@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lamb and lions triangle T</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* layout: one instrument. The sphere is the page; the readout and the switches sit beside it (below it on a phone). */
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#121821; --muted:#586473; --line:#d3dae4;
+  --accent:#2468c4; --lamb:#e2632b; --lion:#2a78d6;
+  --ball-hi:#ffffff; --ball-lo:#c9d0da; --wall:#7f93b0;
+  --ramp-0:#f1f6fd; --ramp-mid:#3987e5; --ramp-1:#0d366b;
+  --font-display:"STIX Two Text","Times New Roman",Times,serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1217; --surface:#161b22; --ink:#e8ecf2; --muted:#9aa5b4; --line:#2a323d;
+    --accent:#74adf0; --lamb:#f08a55; --lion:#5d9dea;
+    --ball-hi:#414c5b; --ball-lo:#1a2028; --wall:#8194b0;
+    --ramp-0:#1e2a39; --ramp-mid:#2f72cc; --ramp-1:#c2dcfb;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1217; --surface:#161b22; --ink:#e8ecf2; --muted:#9aa5b4; --line:#2a323d;
+  --accent:#74adf0; --lamb:#f08a55; --lion:#5d9dea;
+  --ball-hi:#414c5b; --ball-lo:#1a2028; --wall:#8194b0;
+  --ramp-0:#1e2a39; --ramp-mid:#2f72cc; --ramp-1:#c2dcfb;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.5;-webkit-text-size-adjust:100%}
+.page{max-width:1060px;margin:0 auto;padding:22px 18px 40px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;flex-direction:column;gap:6px}
+h1{font-family:var(--font-display);font-weight:600;font-size:28px;line-height:1.15;margin:0;text-wrap:balance}
+h1 i{font-weight:600}
+.lede{margin:0;color:var(--muted);max-width:66ch}
+.grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:780px){.grid{grid-template-columns:minmax(0,1fr)}}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px}
+.canvasbox{position:relative;width:100%;aspect-ratio:1/1;max-height:74vh}
+canvas#view{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;border-radius:6px;outline:none}
+canvas#view:active{cursor:grabbing}
+canvas#view:focus-visible{box-shadow:0 0 0 2px var(--accent)}
+.hint{margin:0;padding:0 6px 4px;color:var(--muted);font-size:13px}
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+h2{font-family:var(--font-body);font-weight:600;font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:0}
+.status{margin:0;font-size:15px}
+.status b{font-weight:600}
+.value{margin:0;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.value b{color:var(--ink);font-weight:600}
+svg#line{width:100%;height:auto;display:block}
+.key{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--muted);font-size:13px;align-items:center}
+.key span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;display:inline-block}
+.sw.lamb{background:var(--lamb);transform:rotate(45deg);width:9px;height:9px}
+.sw.lion{background:var(--lion);border-radius:50%}
+.row{display:flex;flex-wrap:wrap;gap:8px}
+button{font:inherit;font-size:14px;color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer;line-height:1.2}
+button:hover{border-color:var(--muted)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.ramp{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px}
+.ramp i{flex:1;height:10px;border-radius:5px;border:1px solid var(--line);background:linear-gradient(90deg,var(--ramp-0),var(--ramp-mid),var(--ramp-1))}
+.under{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 6px 4px}
+.under{flex-wrap:wrap}
+.under .hint{padding:0;flex:1 1 150px;min-width:0}
+.under .row{flex:none;flex-wrap:nowrap;gap:6px;margin-left:auto}
+.under button{flex:none;white-space:nowrap}
+button i{font-family:var(--font-display);font-style:italic;font-size:1.1em}
+.qread{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.qread[hidden]{display:none}
+.qgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px}
+.qgrid div{display:flex;flex-direction:column;gap:1px;min-width:0}
+.qgrid .k{font-family:var(--font-display);font-size:15px;color:var(--muted)}
+.qgrid b{font-weight:600;font-size:17px;font-variant-numeric:tabular-nums}
+.qgrid .cap{font-size:12px;color:var(--muted);line-height:1.3}
+.legend{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;font-size:14px;align-items:baseline}
+.legend dt{font-family:var(--font-display);font-style:italic;font-size:16px;white-space:nowrap}
+.legend dd{margin:0;color:var(--muted)}
+footer{color:var(--muted);font-size:13px;max-width:70ch}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>The triangle <i>T</i> on the sphere</h1>
+    <p class="lede">Each point of the sphere is a configuration of the lamb and the three lions on the line, once their centre of mass and overall scale are removed. <i>T</i> is the region where the lamb is ahead of every lion.</p>
+  </header>
+
+  <div class="grid">
+    <section class="stage" aria-label="Sphere">
+      <div class="canvasbox">
+        <canvas id="view" tabindex="0" role="img" aria-label="Sphere of configurations with the curved triangle T. Drag to rotate, tap to read a configuration, arrow keys rotate. The q coordinates button adds the axes q1, q2, q3, and the Cube button the cube with faces q = 1 and q = −1 around the sphere."></canvas>
+      </div>
+      <div class="under">
+        <p class="hint">Drag to rotate, tap to read a point.</p>
+        <div class="row">
+          <button type="button" id="t-q" aria-pressed="false"><i>q</i> coordinates</button>
+          <button type="button" id="t-cube" aria-pressed="false">Cube</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="side">
+      <section class="card" aria-live="polite">
+        <h2>Configuration at the marked point</h2>
+        <svg id="line" viewBox="0 0 320 78" role="img" aria-label="Positions of the lamb and the lions on the line"></svg>
+        <div class="key"><span><i class="sw lamb"></i>lamb</span><span><i class="sw lion"></i>lions 1, 2, 3</span><span>ahead is to the right</span></div>
+        <p class="status" id="status"></p>
+        <p class="value" id="value"></p>
+        <div class="qread" id="qread" hidden>
+          <div class="qgrid">
+            <div><span class="k"><i>q</i><sub>1</sub></span><b id="q1"></b></div>
+            <div><span class="k"><i>q</i><sub>2</sub></span><b id="q2"></b></div>
+            <div><span class="k"><i>q</i><sub>3</sub></span><b id="q3"></b></div>
+            <div><span class="k"><i>q</i><sub>2</sub> + <i>q</i><sub>3</sub></span><b id="s1"></b><span class="cap">lead over lion 1</span></div>
+            <div><span class="k"><i>q</i><sub>1</sub> + <i>q</i><sub>3</sub></span><b id="s2"></b><span class="cap">lead over lion 2</span></div>
+            <div><span class="k"><i>q</i><sub>1</sub> + <i>q</i><sub>2</sub></span><b id="s3"></b><span class="cap">lead over lion 3</span></div>
+          </div>
+          <p class="value"><i>T</i> is the part of the sphere where the three leads are positive.</p>
+          <p class="value" id="cuberead" hidden></p>
+        </div>
+        <div class="row" aria-label="Move the marked point">
+          <button type="button" id="go-c">Centre c</button>
+          <button type="button" id="go-v">A corner V</button>
+          <button type="button" id="go-w">A side</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Show</h2>
+        <div class="row">
+          <button type="button" id="t-ground" aria-pressed="true">Ground state</button>
+          <button type="button" id="t-mirror" aria-pressed="true">Mirror lines</button>
+          <button type="button" id="t-cone" aria-pressed="false">Cone and apex</button>
+          <button type="button" id="t-regions" aria-pressed="false">Four regions</button>
+          <button type="button" id="t-labels" aria-pressed="true">Labels</button>
+        </div>
+        <div class="ramp" id="rampkey"><span>0</span><i></i><span>max</span></div>
+        <p class="value" id="rampnote">Colour on <i>T</i>: the ground state <i>m</i><sub>1</sub>, which is also how the configuration of a surviving lamb is distributed at late times.</p>
+      </section>
+
+      <section class="card">
+        <h2>View</h2>
+        <div class="row">
+          <button type="button" id="v-face">Face T</button>
+          <button type="button" id="v-side">From the side</button>
+          <button type="button" id="v-corner">At a corner</button>
+          <button type="button" id="v-q"><i>q</i> frame</button>
+          <button type="button" id="v-spin" aria-pressed="false">Spin</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="card">
+    <h2>What the marks mean</h2>
+    <dl class="legend">
+      <dt>T</dt><dd>Equilateral triangle on the sphere with three angles of 120°. It covers one quarter of the sphere.</dd>
+      <dt>c</dt><dd>Centre of T: the three lions are at the same place, the lamb ahead.</dd>
+      <dt>V</dt><dd>Corners of T: the lamb meets two lions at once, the third one is behind.</dd>
+      <dt>sides</dt><dd>Capture walls. On the side marked lion 1 the lamb meets lion 1, and so on. The small squares are the midpoints of the sides, where the axes q come out of the sphere.</dd>
+      <dt>dashed</dt><dd>Mirror lines: two lions are at the same place.</dd>
+      <dt>O</dt><dd>Apex of the cone, at the centre of the sphere: all four animals coincide. The cone has three flat walls and cuts the sphere along T.</dd>
+      <dt>q</dt><dd>Axes of the q coordinates, shown with the “q coordinates” button under the sphere: solid outside the sphere, dashed inside. Axis q<sub>k</sub> comes out through the middle of the side where the lamb meets lion k.</dd>
+      <dt>circles</dt><dd>With the axes come the three circles q<sub>1</sub> = 0, q<sub>2</sub> = 0 and q<sub>3</sub> = 0. T holds the whole octant where the three q are positive, plus a third of each of the three octants next to it.</dd>
+      <dt>dotted</dt><dd>Orange dotted lines drop from the marked point onto the three axes. Where they land are its coordinates q<sub>1</sub>, q<sub>2</sub>, q<sub>3</sub>.</dd>
+      <dt>cube</dt><dd>The “Cube” button draws the cube −1 ≤ q<sub>1</sub>, q<sub>2</sub>, q<sub>3</sub> ≤ 1. Each face touches the sphere where an axis comes out. The three capture walls and the three mirror planes are its six diagonal planes. The walls cut the cube along three face diagonals (thick lines), which touch the sides of T at their midpoints. Seen on the cube, T is the shaded cap: three half faces around the vertex (1, 1, 1). The solid orange line carries the marked point out to its shadow on the cube.</dd>
+    </dl>
+  </section>
+
+  <footer>Coordinates: q<sub>1</sub> = (x<sub>0</sub> + x<sub>1</sub> − x<sub>2</sub> − x<sub>3</sub>)/2, q<sub>2</sub> = (x<sub>0</sub> − x<sub>1</sub> + x<sub>2</sub> − x<sub>3</sub>)/2, q<sub>3</sub> = (x<sub>0</sub> − x<sub>1</sub> − x<sub>2</sub> + x<sub>3</sub>)/2, with x<sub>0</sub> the lamb. The sphere is q<sub>1</sub>² + q<sub>2</sub>² + q<sub>3</sub>² = 1 and T is the part of it where q<sub>1</sub> + q<sub>2</sub>, q<sub>1</sub> + q<sub>3</sub> and q<sub>2</sub> + q<sub>3</sub> are all positive. In these coordinates c = (1, 1, 1)/√3, the corners are (1, 1, −1)/√3, (−1, 1, 1)/√3 and (1, −1, 1)/√3, and two lions are at the same place where two of the q are equal.</footer>
+</div>
+
+<script>
+(() => {
+"use strict";
+const DATA = {"n":72,"m":[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.002,0.004,0.005,0.006,0.007,0.008,0.009,0.01,0.011,0.012,0.013,0.014,0.015,0.016,0.017,0.018,0.019,0.02,0.021,0.022,0.023,0.024,0.025,0.026,0.027,0.028,0.029,0.03,0.031,0.032,0.032,0.033,0.033,0.033,0.034,0.034,0.033,0.033,0.033,0.032,0.032,0.031,0.03,0.029,0.028,0.027,0.026,0.025,0.024,0.023,0.022,0.021,0.02,0.019,0.018,0.017,0.016,0.015,0.014,0.013,0.012,0.011,0.01,0.009,0.008,0.007,0.006,0.005,0.004,0.002,0.0,0.0,0.004,0.007,0.009,0.012,0.014,0.016,0.018,0.02,0.022,0.024,0.026,0.028,0.03,0.032,0.034,0.036,0.039,0.041,0.043,0.046,0.048,0.05,0.053,0.055,0.057,0.059,0.061,0.063,0.064,0.066,0.067,0.068,0.068,0.069,0.069,0.069,0.068,0.068,0.067,0.066,0.064,0.063,0.061,0.059,0.057,0.055,0.053,0.05,0.048,0.046,0.043,0.041,0.039,0.036,0.034,0.032,0.03,0.028,0.026,0.024,0.022,0.02,0.018,0.016,0.014,0.012,0.009,0.007,0.004,0.0,0.0,0.005,0.009,0.013,0.017,0.02,0.023,0.026,0.03,0.033,0.036,0.039,0.042,0.046,0.049,0.053,0.056,0.06,0.063,0.067,0.071,0.074,0.078,0.082,0.085,0.088,0.092,0.095,0.097,0.1,0.102,0.104,0.105,0.106,0.106,0.106,0.106,0.105,0.104,0.102,0.1,0.097,0.095,0.092,0.088,0.085,0.082,0.078,0.074,0.071,0.067,0.063,0.06,0.056,0.053,0.049,0.046,0.042,0.039,0.036,0.033,0.03,0.026,0.023,0.02,0.017,0.013,0.009,0.005,0.0,0.0,0.006,0.012,0.017,0.022,0.026,0.031,0.035,0.039,0.044,0.048,0.053,0.057,0.062,0.067,0.072,0.077,0.082,0.087,0.092,0.097,0.103,0.108,0.113,0.118,0.122,0.127,0.131,0.135,0.138,0.141,0.143,0.145,0.145,0.146,0.145,0.145,0.143,0.141,0.138,0.135,0.131,0.127,0.122,0.118,0.113,0.108,0.103,0.097,0.092,0.087,0.082,0.077,0.072,0.067,0.062,0.057,0.053,0.048,0.044,0.039,0.035,0.031,0.026,0.022,0.017,0.012,0.006,0.0,0.0,0.007,0.014,0.02,0.026,0.032,0.038,0.044,0.049,0.055,0.061,0.067,0.073,0.079,0.086,0.092,0.099,0.105,0.112,0.119,0.126,0.133,0.139,0.146,0.152,0.159,0.164,0.17,0.174,0.179,0.182,0.185,0.186,0.187,0.187,0.186,0.185,0.182,0.179,0.174,0.17,0.164,0.159,0.152,0.146,0.139,0.133,0.126,0.119,0.112,0.105,0.099,0.092,0.086,0.079,0.073,0.067,0.061,0.055,0.049,0.044,0.038,0.032,0.026,0.02,0.014,0.007,0.0,0.0,0.008,0.016,0.023,0.031,0.038,0.045,0.052,0.059,0.067,0.074,0.082,0.089,0.097,0.105,0.113,0.122,0.13,0.139,0.147,0.156,0.165,0.173,0.182,0.19,0.197,0.205,0.211,0.217,0.222,0.226,0.229,0.23,0.231,0.23,0.229,0.226,0.222,0.217,0.211,0.205,0.197,0.19,0.182,0.173,0.165,0.156,0.147,0.139,0.13,0.122,0.113,0.105,0.097,0.089,0.082,0.074,0.067,0.059,0.052,0.045,0.038,0.031,0.023,0.016,0.008,0.0,0.0,0.009,0.018,0.026,0.035,0.044,0.052,0.061,0.07,0.078,0.087,0.097,0.106,0.116,0.125,0.135,0.146,0.156,0.167,0.177,0.188,0.199,0.209,0.22,0.23,0.239,0.248,0.255,0.262,0.268,0.272,0.275,0.277,0.277,0.275,0.272,0.268,0.262,0.255,0.248,0.239,0.23,0.22,0.209,0.199,0.188,0.177,0.167,0.156,0.146,0.135,0.125,0.116,0.106,0.097,0.087,0.078,0.07,0.061,0.052,0.044,0.035,0.026,0.018,0.009,0.0,0.0,0.01,0.02,0.03,0.039,0.049,0.059,0.07,0.08,0.09,0.101,0.112,0.123,0.135,0.147,0.159,0.171,0.184,0.197,0.21,0.223,0.235,0.248,0.261,0.272,0.283,0.294,0.303,0.31,0.317,0.321,0.324,0.325,0.324,0.321,0.317,0.31,0.303,0.294,0.283,0.272,0.261,0.248,0.235,0.223,0.21,0.197,0.184,0.171,0.159,0.147,0.135,0.123,0.112,0.101,0.09,0.08,0.07,0.059,0.049,0.039,0.03,0.02,0.01,0.0,0.0,0.011,0.022,0.033,0.044,0.055,0.067,0.078,0.09,0.103,0.115,0.128,0.141,0.155,0.169,0.183,0.198,0.213,0.228,0.244,0.259,0.274,0.289,0.304,0.318,0.331,0.342,0.353,0.361,0.368,0.372,0.374,0.374,0.372,0.368,0.361,0.353,0.342,0.331,0.318,0.304,0.289,0.274,0.259,0.244,0.228,0.213,0.198,0.183,0.169,0.155,0.141,0.128,0.115,0.103,0.09,0.078,0.067,0.055,0.044,0.033,0.022,0.011,0.0,0.0,0.012,0.024,0.036,0.048,0.061,0.074,0.087,0.101,0.115,0.13,0.144,0.16,0.176,0.192,0.209,0.226,0.244,0.262,0.28,0.298,0.316,0.333,0.35,0.366,0.381,0.394,0.405,0.414,0.421,0.425,0.426,0.425,0.421,0.414,0.405,0.394,0.381,0.366,0.35,0.333,0.316,0.298,0.28,0.262,0.244,0.226,0.209,0.192,0.176,0.16,0.144,0.13,0.115,0.101,0.087,0.074,0.061,0.048,0.036,0.024,0.012,0.0,0.0,0.013,0.026,0.039,0.053,0.067,0.082,0.097,0.112,0.128,0.144,0.162,0.179,0.197,0.216,0.236,0.256,0.276,0.297,0.318,0.339,0.359,0.38,0.399,0.417,0.433,0.448,0.46,0.47,0.476,0.479,0.479,0.476,0.47,0.46,0.448,0.433,0.417,0.399,0.38,0.359,0.339,0.318,0.297,0.276,0.256,0.236,0.216,0.197,0.179,0.162,0.144,0.128,0.112,0.097,0.082,0.067,0.053,0.039,0.026,0.013,0.0,0.0,0.014,0.028,0.042,0.057,0.073,0.089,0.106,0.123,0.141,0.16,0.179,0.199,0.22,0.242,0.264,0.287,0.31,0.334,0.358,0.382,0.406,0.428,0.45,0.47,0.489,0.504,0.517,0.527,0.532,0.534,0.532,0.527,0.517,0.504,0.489,0.47,0.45,0.428,0.406,0.382,0.358,0.334,0.31,0.287,0.264,0.242,0.22,0.199,0.179,0.16,0.141,0.123,0.106,0.089,0.073,0.057,0.042,0.028,0.014,0.0,0.0,0.015,0.03,0.046,0.062,0.079,0.097,0.116,0.135,0.155,0.176,0.197,0.22,0.244,0.268,0.293,0.319,0.346,0.373,0.4,0.427,0.454,0.48,0.504,0.526,0.546,0.563,0.575,0.584,0.589,0.589,0.584,0.575,0.563,0.546,0.526,0.504,0.48,0.454,0.427,0.4,0.373,0.346,0.319,0.293,0.268,0.244,0.22,0.197,0.176,0.155,0.135,0.116,0.097,0.079,0.062,0.046,0.03,0.015,0.0,0.0,0.016,0.032,0.049,0.067,0.086,0.105,0.125,0.147,0.169,0.192,0.216,0.242,0.268,0.296,0.324,0.353,0.383,0.414,0.444,0.475,0.505,0.533,0.56,0.584,0.605,0.622,0.634,0.642,0.645,0.642,0.634,0.622,0.605,0.584,0.56,0.533,0.505,0.475,0.444,0.414,0.383,0.353,0.324,0.296,0.268,0.242,0.216,0.192,0.169,0.147,0.125,0.105,0.086,0.067,0.049,0.032,0.016,0.0,0.0,0.017,0.034,0.053,0.072,0.092,0.113,0.135,0.159,0.183,0.209,0.236,0.264,0.293,0.324,0.356,0.388,0.422,0.456,0.49,0.524,0.557,0.588,0.617,0.642,0.664,0.681,0.693,0.699,0.699,0.693,0.681,0.664,0.642,0.617,0.588,0.557,0.524,0.49,0.456,0.422,0.388,0.356,0.324,0.293,0.264,0.236,0.209,0.183,0.159,0.135,0.113,0.092,0.072,0.053,0.034,0.017,0.0,0.0,0.018,0.036,0.056,0.077,0.099,0.122,0.146,0.171,0.198,0.226,0.256,0.287,0.319,0.353,0.388,0.425,0.462,0.5,0.537,0.574,0.61,0.644,0.674,0.701,0.723,0.74,0.75,0.753,0.75,0.74,0.723,0.701,0.674,0.644,0.61,0.574,0.537,0.5,0.462,0.425,0.388,0.353,0.319,0.287,0.256,0.226,0.198,0.171,0.146,0.122,0.099,0.077,0.056,0.036,0.018,0.0,0.0,0.019,0.039,0.06,0.082,0.105,0.13,0.156,0.184,0.213,0.244,0.276,0.31,0.346,0.383,0.422,0.462,0.503,0.544,0.585,0.625,0.664,0.7,0.732,0.759,0.78,0.795,0.803,0.803,0.795,0.78,0.759,0.732,0.7,0.664,0.625,0.585,0.544,0.503,0.462,0.422,0.383,0.346,0.31,0.276,0.244,0.213,0.184,0.156,0.13,0.105,0.082,0.06,0.039,0.019,0.0,0.0,0.02,0.041,0.063,0.087,0.112,0.139,0.167,0.197,0.228,0.262,0.297,0.334,0.373,0.414,0.456,0.5,0.544,0.589,0.633,0.676,0.717,0.754,0.787,0.814,0.834,0.847,0.851,0.847,0.834,0.814,0.787,0.754,0.717,0.676,0.633,0.589,0.544,0.5,0.456,0.414,0.373,0.334,0.297,0.262,0.228,0.197,0.167,0.139,0.112,0.087,0.063,0.041,0.02,0.0,0.0,0.021,0.043,0.067,0.092,0.119,0.147,0.177,0.21,0.244,0.28,0.318,0.358,0.4,0.444,0.49,0.537,0.585,0.633,0.68,0.726,0.768,0.807,0.84,0.865,0.883,0.893,0.893,0.883,0.865,0.84,0.807,0.768,0.726,0.68,0.633,0.585,0.537,0.49,0.444,0.4,0.358,0.318,0.28,0.244,0.21,0.177,0.147,0.119,0.092,0.067,0.043,0.021,0.0,0.0,0.022,0.046,0.071,0.097,0.126,0.156,0.188,0.223,0.259,0.298,0.339,0.382,0.427,0.475,0.524,0.574,0.625,0.676,0.726,0.773,0.817,0.855,0.887,0.911,0.925,0.93,0.925,0.911,0.887,0.855,0.817,0.773,0.726,0.676,0.625,0.574,0.524,0.475,0.427,0.382,0.339,0.298,0.259,0.223,0.188,0.156,0.126,0.097,0.071,0.046,0.022,0.0,0.0,0.023,0.048,0.074,0.103,0.133,0.165,0.199,0.235,0.274,0.316,0.359,0.406,0.454,0.505,0.557,0.61,0.664,0.717,0.768,0.817,0.86,0.898,0.928,0.948,0.959,0.959,0.948,0.928,0.898,0.86,0.817,0.768,0.717,0.664,0.61,0.557,0.505,0.454,0.406,0.359,0.316,0.274,0.235,0.199,0.165,0.133,0.103,0.074,0.048,0.023,0.0,0.0,0.024,0.05,0.078,0.108,0.139,0.173,0.209,0.248,0.289,0.333,0.38,0.428,0.48,0.533,0.588,0.644,0.7,0.754,0.807,0.855,0.898,0.933,0.96,0.977,0.982,0.977,0.96,0.933,0.898,0.855,0.807,0.754,0.7,0.644,0.588,0.533,0.48,0.428,0.38,0.333,0.289,0.248,0.209,0.173,0.139,0.108,0.078,0.05,0.024,0.0,0.0,0.025,0.053,0.082,0.113,0.146,0.182,0.22,0.261,0.304,0.35,0.399,0.45,0.504,0.56,0.617,0.674,0.732,0.787,0.84,0.887,0.928,0.96,0.983,0.994,0.994,0.983,0.96,0.928,0.887,0.84,0.787,0.732,0.674,0.617,0.56,0.504,0.45,0.399,0.35,0.304,0.261,0.22,0.182,0.146,0.113,0.082,0.053,0.025,0.0,0.0,0.026,0.055,0.085,0.118,0.152,0.19,0.23,0.272,0.318,0.366,0.417,0.47,0.526,0.584,0.642,0.701,0.759,0.814,0.865,0.911,0.948,0.977,0.994,1.0,0.994,0.977,0.948,0.911,0.865,0.814,0.759,0.701,0.642,0.584,0.526,0.47,0.417,0.366,0.318,0.272,0.23,0.19,0.152,0.118,0.085,0.055,0.026,0.0,0.0,0.027,0.057,0.088,0.122,0.159,0.197,0.239,0.283,0.331,0.381,0.433,0.489,0.546,0.605,0.664,0.723,0.78,0.834,0.883,0.925,0.959,0.982,0.994,0.994,0.982,0.959,0.925,0.883,0.834,0.78,0.723,0.664,0.605,0.546,0.489,0.433,0.381,0.331,0.283,0.239,0.197,0.159,0.122,0.088,0.057,0.027,0.0,0.0,0.028,0.059,0.092,0.127,0.164,0.205,0.248,0.294,0.342,0.394,0.448,0.504,0.563,0.622,0.681,0.74,0.795,0.847,0.893,0.93,0.959,0.977,0.983,0.977,0.959,0.93,0.893,0.847,0.795,0.74,0.681,0.622,0.563,0.504,0.448,0.394,0.342,0.294,0.248,0.205,0.164,0.127,0.092,0.059,0.028,0.0,0.0,0.029,0.061,0.095,0.131,0.17,0.211,0.255,0.303,0.353,0.405,0.46,0.517,0.575,0.634,0.693,0.75,0.803,0.851,0.893,0.925,0.948,0.96,0.96,0.948,0.925,0.893,0.851,0.803,0.75,0.693,0.634,0.575,0.517,0.46,0.405,0.353,0.303,0.255,0.211,0.17,0.131,0.095,0.061,0.029,0.0,0.0,0.03,0.063,0.097,0.135,0.174,0.217,0.262,0.31,0.361,0.414,0.47,0.527,0.584,0.642,0.699,0.753,0.803,0.847,0.883,0.911,0.928,0.933,0.928,0.911,0.883,0.847,0.803,0.753,0.699,0.642,0.584,0.527,0.47,0.414,0.361,0.31,0.262,0.217,0.174,0.135,0.097,0.063,0.03,0.0,0.0,0.031,0.064,0.1,0.138,0.179,0.222,0.268,0.317,0.368,0.421,0.476,0.532,0.589,0.645,0.699,0.75,0.795,0.834,0.865,0.887,0.898,0.898,0.887,0.865,0.834,0.795,0.75,0.699,0.645,0.589,0.532,0.476,0.421,0.368,0.317,0.268,0.222,0.179,0.138,0.1,0.064,0.031,0.0,0.0,0.032,0.066,0.102,0.141,0.182,0.226,0.272,0.321,0.372,0.425,0.479,0.534,0.589,0.642,0.693,0.74,0.78,0.814,0.84,0.855,0.86,0.855,0.84,0.814,0.78,0.74,0.693,0.642,0.589,0.534,0.479,0.425,0.372,0.321,0.272,0.226,0.182,0.141,0.102,0.066,0.032,0.0,0.0,0.032,0.067,0.104,0.143,0.185,0.229,0.275,0.324,0.374,0.426,0.479,0.532,0.584,0.634,0.681,0.723,0.759,0.787,0.807,0.817,0.817,0.807,0.787,0.759,0.723,0.681,0.634,0.584,0.532,0.479,0.426,0.374,0.324,0.275,0.229,0.185,0.143,0.104,0.067,0.032,0.0,0.0,0.033,0.068,0.105,0.145,0.186,0.23,0.277,0.325,0.374,0.425,0.476,0.527,0.575,0.622,0.664,0.701,0.732,0.754,0.768,0.773,0.768,0.754,0.732,0.701,0.664,0.622,0.575,0.527,0.476,0.425,0.374,0.325,0.277,0.23,0.186,0.145,0.105,0.068,0.033,0.0,0.0,0.033,0.068,0.106,0.145,0.187,0.231,0.277,0.324,0.372,0.421,0.47,0.517,0.563,0.605,0.642,0.674,0.7,0.717,0.726,0.726,0.717,0.7,0.674,0.642,0.605,0.563,0.517,0.47,0.421,0.372,0.324,0.277,0.231,0.187,0.145,0.106,0.068,0.033,0.0,0.0,0.033,0.069,0.106,0.146,0.187,0.23,0.275,0.321,0.368,0.414,0.46,0.504,0.546,0.584,0.617,0.644,0.664,0.676,0.68,0.676,0.664,0.644,0.617,0.584,0.546,0.504,0.46,0.414,0.368,0.321,0.275,0.23,0.187,0.146,0.106,0.069,0.033,0.0,0.0,0.034,0.069,0.106,0.145,0.186,0.229,0.272,0.317,0.361,0.405,0.448,0.489,0.526,0.56,0.588,0.61,0.625,0.633,0.633,0.625,0.61,0.588,0.56,0.526,0.489,0.448,0.405,0.361,0.317,0.272,0.229,0.186,0.145,0.106,0.069,0.034,0.0,0.0,0.034,0.069,0.106,0.145,0.185,0.226,0.268,0.31,0.353,0.394,0.433,0.47,0.504,0.533,0.557,0.574,0.585,0.589,0.585,0.574,0.557,0.533,0.504,0.47,0.433,0.394,0.353,0.31,0.268,0.226,0.185,0.145,0.106,0.069,0.034,0.0,0.0,0.033,0.068,0.105,0.143,0.182,0.222,0.262,0.303,0.342,0.381,0.417,0.45,0.48,0.505,0.524,0.537,0.544,0.544,0.537,0.524,0.505,0.48,0.45,0.417,0.381,0.342,0.303,0.262,0.222,0.182,0.143,0.105,0.068,0.033,0.0,0.0,0.033,0.068,0.104,0.141,0.179,0.217,0.255,0.294,0.331,0.366,0.399,0.428,0.454,0.475,0.49,0.5,0.503,0.5,0.49,0.475,0.454,0.428,0.399,0.366,0.331,0.294,0.255,0.217,0.179,0.141,0.104,0.068,0.033,0.0,0.0,0.033,0.067,0.102,0.138,0.174,0.211,0.248,0.283,0.318,0.35,0.38,0.406,0.427,0.444,0.456,0.462,0.462,0.456,0.444,0.427,0.406,0.38,0.35,0.318,0.283,0.248,0.211,0.174,0.138,0.102,0.067,0.033,0.0,0.0,0.032,0.066,0.1,0.135,0.17,0.205,0.239,0.272,0.304,0.333,0.359,0.382,0.4,0.414,0.422,0.425,0.422,0.414,0.4,0.382,0.359,0.333,0.304,0.272,0.239,0.205,0.17,0.135,0.1,0.066,0.032,0.0,0.0,0.032,0.064,0.097,0.131,0.164,0.197,0.23,0.261,0.289,0.316,0.339,0.358,0.373,0.383,0.388,0.388,0.383,0.373,0.358,0.339,0.316,0.289,0.261,0.23,0.197,0.164,0.131,0.097,0.064,0.032,0.0,0.0,0.031,0.063,0.095,0.127,0.159,0.19,0.22,0.248,0.274,0.298,0.318,0.334,0.346,0.353,0.356,0.353,0.346,0.334,0.318,0.298,0.274,0.248,0.22,0.19,0.159,0.127,0.095,0.063,0.031,0.0,0.0,0.03,0.061,0.092,0.122,0.152,0.182,0.209,0.235,0.259,0.28,0.297,0.31,0.319,0.324,0.324,0.319,0.31,0.297,0.28,0.259,0.235,0.209,0.182,0.152,0.122,0.092,0.061,0.03,0.0,0.0,0.029,0.059,0.088,0.118,0.146,0.173,0.199,0.223,0.244,0.262,0.276,0.287,0.293,0.296,0.293,0.287,0.276,0.262,0.244,0.223,0.199,0.173,0.146,0.118,0.088,0.059,0.029,0.0,0.0,0.028,0.057,0.085,0.113,0.139,0.165,0.188,0.21,0.228,0.244,0.256,0.264,0.268,0.268,0.264,0.256,0.244,0.228,0.21,0.188,0.165,0.139,0.113,0.085,0.057,0.028,0.0,0.0,0.027,0.055,0.082,0.108,0.133,0.156,0.177,0.197,0.213,0.226,0.236,0.242,0.244,0.242,0.236,0.226,0.213,0.197,0.177,0.156,0.133,0.108,0.082,0.055,0.027,0.0,0.0,0.026,0.053,0.078,0.103,0.126,0.147,0.167,0.184,0.198,0.209,0.216,0.22,0.22,0.216,0.209,0.198,0.184,0.167,0.147,0.126,0.103,0.078,0.053,0.026,0.0,0.0,0.025,0.05,0.074,0.097,0.119,0.139,0.156,0.171,0.183,0.192,0.197,0.199,0.197,0.192,0.183,0.171,0.156,0.139,0.119,0.097,0.074,0.05,0.025,0.0,0.0,0.024,0.048,0.071,0.092,0.112,0.13,0.146,0.159,0.169,0.176,0.179,0.179,0.176,0.169,0.159,0.146,0.13,0.112,0.092,0.071,0.048,0.024,0.0,0.0,0.023,0.046,0.067,0.087,0.105,0.122,0.135,0.147,0.155,0.16,0.162,0.16,0.155,0.147,0.135,0.122,0.105,0.087,0.067,0.046,0.023,0.0,0.0,0.022,0.043,0.063,0.082,0.099,0.113,0.125,0.135,0.141,0.144,0.144,0.141,0.135,0.125,0.113,0.099,0.082,0.063,0.043,0.022,0.0,0.0,0.021,0.041,0.06,0.077,0.092,0.105,0.116,0.123,0.128,0.13,0.128,0.123,0.116,0.105,0.092,0.077,0.06,0.041,0.021,0.0,0.0,0.02,0.039,0.056,0.072,0.086,0.097,0.106,0.112,0.115,0.115,0.112,0.106,0.097,0.086,0.072,0.056,0.039,0.02,0.0,0.0,0.019,0.036,0.053,0.067,0.079,0.089,0.097,0.101,0.103,0.101,0.097,0.089,0.079,0.067,0.053,0.036,0.019,0.0,0.0,0.018,0.034,0.049,0.062,0.073,0.082,0.087,0.09,0.09,0.087,0.082,0.073,0.062,0.049,0.034,0.018,0.0,0.0,0.017,0.032,0.046,0.057,0.067,0.074,0.078,0.08,0.078,0.074,0.067,0.057,0.046,0.032,0.017,0.0,0.0,0.016,0.03,0.042,0.053,0.061,0.067,0.07,0.07,0.067,0.061,0.053,0.042,0.03,0.016,0.0,0.0,0.015,0.028,0.039,0.048,0.055,0.059,0.061,0.059,0.055,0.048,0.039,0.028,0.015,0.0,0.0,0.014,0.026,0.036,0.044,0.049,0.052,0.052,0.049,0.044,0.036,0.026,0.014,0.0,0.0,0.013,0.024,0.033,0.039,0.044,0.045,0.044,0.039,0.033,0.024,0.013,0.0,0.0,0.012,0.022,0.03,0.035,0.038,0.038,0.035,0.03,0.022,0.012,0.0,0.0,0.011,0.02,0.026,0.031,0.032,0.031,0.026,0.02,0.011,0.0,0.0,0.01,0.018,0.023,0.026,0.026,0.023,0.018,0.01,0.0,0.0,0.009,0.016,0.02,0.022,0.02,0.016,0.009,0.0,0.0,0.008,0.014,0.017,0.017,0.014,0.008,0.0,0.0,0.007,0.012,0.013,0.012,0.007,0.0,0.0,0.006,0.009,0.009,0.006,0.0,0.0,0.005,0.007,0.005,0.0,0.0,0.004,0.004,0.0,0.0,0.002,0.0,0.0,0.0,0.0]};
+const S3 = Math.sqrt(3);
+const V = [[1,1,-1],[-1,1,1],[1,-1,1]].map(v => v.map(x => x/S3));   // corners: lamb meets lions (1,2), (2,3), (1,3)
+const C = [1/S3,1/S3,1/S3];
+const MID = [[1,0,0],[0,1,0],[0,0,1]];                                // midpoint of the wall of lion 1, 2, 3
+const WALLS = [[2,0,1],[0,1,2],[1,2,3]];                              // [corner a, corner b, lion] for each side of T
+const RAY = 1.2;
+// the cube |q| <= 1: its faces touch the sphere where the axes come out
+const CB = [1,1,1];                                                   // vertex in the direction of c
+const VB = V.map(v => v.map(x => Math.round(x*S3)));                  // vertices in the directions of the corners of T
+const CED = (() => { const P=[], E=[]; for(const a of [-1,1]) for(const b of [-1,1]) for(const c of [-1,1]) P.push([a,b,c]);
+  for(let i=0;i<8;i++) for(let j=i+1;j<8;j++){ const d=[0,1,2].filter(k => P[i][k]!==P[j][k]); if(d.length===1) E.push([P[i], P[j], [0,1,2].filter(k => k!==d[0]).map(k => [k, P[i][k]])]); }
+  return E; })();                                                     // 12 edges, each with the two faces [axis, sign] it belongs to
+
+// ---------- small vector helpers
+const dot = (a,b) => a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
+const cross = (a,b) => [a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0]];
+const norm = v => { const l = Math.hypot(v[0],v[1],v[2]) || 1; return [v[0]/l,v[1]/l,v[2]/l]; };
+const mix = (a,b,s) => [a[0]+(b[0]-a[0])*s, a[1]+(b[1]-a[1])*s, a[2]+(b[2]-a[2])*s];
+const scale = (a,s) => [a[0]*s,a[1]*s,a[2]*s];
+function arc(a,b,N){ const out=[]; const w=Math.acos(Math.max(-1,Math.min(1,dot(a,b)))); const sw=Math.sin(w);
+  for(let i=0;i<=N;i++){ const s=i/N; const ka=Math.sin((1-s)*w)/sw, kb=Math.sin(s*w)/sw; out.push([ka*a[0]+kb*b[0],ka*a[1]+kb*b[1],ka*a[2]+kb*b[2]]); } return out; }
+function matMul(A,B){ const M=new Array(9); for(let i=0;i<3;i++)for(let j=0;j<3;j++) M[3*i+j]=A[3*i]*B[j]+A[3*i+1]*B[3+j]+A[3*i+2]*B[6+j]; return M; }
+function axisAngle(ax,th){ const [x,y,z]=norm(ax), c=Math.cos(th), s=Math.sin(th), t=1-c;
+  return [t*x*x+c,t*x*y-s*z,t*x*z+s*y, t*x*y+s*z,t*y*y+c,t*y*z-s*x, t*x*z-s*y,t*y*z+s*x,t*z*z+c]; }
+function frame(toward, up){ const z=norm(toward); let y=mix(up,z,0); const k=dot(y,z); y=norm([y[0]-k*z[0],y[1]-k*z[1],y[2]-k*z[2]]); const x=cross(y,z); return [x[0],x[1],x[2], y[0],y[1],y[2], z[0],z[1],z[2]]; }
+
+// ---------- meshes
+function grid(nn){ const P=[]; for(let i=0;i<=nn;i++)for(let j=0;j<=nn-i;j++){ const k=nn-i-j; P.push(norm([i*V[0][0]+j*V[1][0]+k*V[2][0], i*V[0][1]+j*V[1][1]+k*V[2][1], i*V[0][2]+j*V[1][2]+k*V[2][2]])); } return P; }
+function tris(nn){ const id=(i,j)=>i*(nn+1)-i*(i-1)/2+j, T=[]; for(let i=0;i<nn;i++)for(let j=0;j<nn-i;j++){ T.push([id(i,j),id(i+1,j),id(i,j+1)]); if(j<nn-i-1) T.push([id(i+1,j),id(i+1,j+1),id(i,j+1)]); } return T; }
+const n = DATA.n, M1 = DATA.m, PT = grid(n), TT = tris(n);
+const TV = TT.map(t => (M1[t[0]]+M1[t[1]]+M1[t[2]])/3);
+// a coarser copy of the same mesh, used while the sphere is moving
+const n2 = n/2, PT2 = grid(n2), TT2 = tris(n2), M2 = (() => { const id=(i,j)=>i*(n+1)-i*(i-1)/2+j, out=[]; for(let i=0;i<=n2;i++)for(let j=0;j<=n2-i;j++) out.push(M1[id(2*i,2*j)]); return out; })();
+const TV2 = TT2.map(t => (M2[t[0]]+M2[t[1]]+M2[t[2]])/3);
+const NC = 9, PC = grid(NC), TC = tris(NC);
+const REFL = [q=>[q[0],-q[2],-q[1]], q=>[-q[2],q[1],-q[0]], q=>[-q[1],-q[0],q[2]]];     // lamb <-> lion k
+const REG = REFL.map(f => PC.map(f));
+const UC = [[1,-1,-1],[-1,1,-1],[-1,-1,1]].map(v => v.map(x => x/S3));                    // centres of the regions where lion k leads
+const ANTI = scale(C,-1);
+const tang = (p, to) => { const k=dot(to,p); return norm([to[0]-k*p[0], to[1]-k*p[1], to[2]-k*p[2]]); };                     // unit tangent at p pointing towards `to`
+const MLAB = MID.map(m => { const u=tang(m,C); return [0,1,2].map(i => m[i]-0.25*u[i]); });                                  // straight out of T
+const TLAB = norm([0,1,2].map(i => 0.5*V[0][i]+0.3*V[1][i]+0.2*V[2][i]));
+const LLAB = norm(mix(C, MID[2], 0.5));
+const CIRC = [0,1,2].map(a => { const p=[]; for(let i=0;i<=96;i++){ const t=2*Math.PI*i/96, q=[0,0,0]; q[(a+1)%3]=Math.cos(t); q[(a+2)%3]=Math.sin(t); p.push(q); } return p; });   // the circles q_a = 0
+
+// ---------- ground state at an arbitrary point of T (linear interpolation on the mesh)
+const Minv = (() => { const a=V[0],b=V[1],c=V[2]; const det=dot(a,cross(b,c)); const r0=cross(b,c), r1=cross(c,a), r2=cross(a,b); return [r0,r1,r2].map(r=>scale(r,1/det)); })();
+function groundAt(q){ let w=[dot(Minv[0],q),dot(Minv[1],q),dot(Minv[2],q)]; const s=w[0]+w[1]+w[2]; w=w.map(x=>x/s); if(Math.min(w[0],w[1],w[2])<-1e-9) return null;
+  const id=(i,j)=>i*(n+1)-i*(i-1)/2+j; let a=Math.max(0,w[0])*n, b=Math.max(0,w[1])*n; let i=Math.min(n-1,Math.floor(a)), j=Math.min(n-1-i,Math.floor(b)); let fa=a-i, fb=b-j;
+  if(fa+fb<=1 || j>=n-i-1){ const k=Math.min(1,fa+fb); if(fa+fb>1){ fa/=k; fb/=k; } return M1[id(i,j)]*(1-fa-fb)+M1[id(i+1,j)]*fa+M1[id(i,j+1)]*fb; }
+  return M1[id(i+1,j+1)]*(fa+fb-1)+M1[id(i+1,j)]*(1-fb)+M1[id(i,j+1)]*(1-fa); }
+const animals = q => [(q[0]+q[1]+q[2])/2,(q[0]-q[1]-q[2])/2,(-q[0]+q[1]-q[2])/2,(-q[0]-q[1]+q[2])/2];
+
+// ---------- state
+const el = id => document.getElementById(id);
+const cv = el('view'), ctx = cv.getContext('2d');
+const show = {ground:true, mirror:true, cone:false, regions:false, q:false, cube:false, labels:true};
+const EX = norm([1,1,-2]), EY = norm([-1,1,0]);
+function viewOf(delta,az,up){ const d=delta*Math.PI/180,a=az*Math.PI/180; const dir=[0,1,2].map(i=>Math.cos(d)*C[i]+Math.sin(d)*(Math.cos(a)*EX[i]+Math.sin(a)*EY[i])); return frame(dir,up); }
+const VIEWS = {face:viewOf(10,-70,EY), side:viewOf(84,-9,C), corner:frame(mix(V[0],C,0.18),C),
+  q:(() => { const az=35*Math.PI/180, elv=25*Math.PI/180; return frame([Math.cos(elv)*Math.cos(az), Math.cos(elv)*Math.sin(az), Math.sin(elv)], [0,0,1]); })(),   // q3 up, q1 towards the viewer on the left, q2 to the right
+  cube:(() => { const az=22*Math.PI/180, elv=16*Math.PI/180; return frame([Math.cos(elv)*Math.cos(az), Math.cos(elv)*Math.sin(az), Math.sin(elv)], [0,0,1]); })()};   // the same frame, turned so that the face q1 = 1 is seen almost from the front
+let R = VIEWS.face.slice(), probe = C.slice(), spin = false, anim = null, pending = false, W = 0, H = 0, Srad = 1, cx = 0, cy = 0, zoomD = 1.34;
+const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- colours from the page tokens
+function hex(c){ c=c.trim(); if(c[0]==='#'){ if(c.length===4) c='#'+c[1]+c[1]+c[2]+c[2]+c[3]+c[3]; return [parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)]; } const m=c.match(/[\d.]+/g)||[0,0,0]; return [+m[0],+m[1],+m[2]]; }
+let K = {};
+function tokens(){ const cs=getComputedStyle(document.documentElement); const g=nm=>cs.getPropertyValue(nm);
+  K={bg:g('--surface').trim(), ink:g('--ink').trim(), muted:g('--muted').trim(), line:g('--line').trim(), accent:g('--accent').trim(), lamb:g('--lamb').trim(), lion:g('--lion').trim(),
+     hi:g('--ball-hi').trim(), lo:g('--ball-lo').trim(), wall:hex(g('--wall')), r0:hex(g('--ramp-0')), rm:hex(g('--ramp-mid')), r1:hex(g('--ramp-1')), lionRGB:hex(g('--lion')),
+     fd:g('--font-display').trim(), fb:g('--font-body').trim()}; }
+function ramp(v){ v=Math.max(0,Math.min(1,v)); const a=v<0.5?K.r0:K.rm, b=v<0.5?K.rm:K.r1, s=v<0.5?v*2:(v-0.5)*2; return 'rgb('+Math.round(a[0]+(b[0]-a[0])*s)+','+Math.round(a[1]+(b[1]-a[1])*s)+','+Math.round(a[2]+(b[2]-a[2])*s)+')'; }
+const rgba = (c,a) => 'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';
+
+// ---------- drawing
+const rot = q => [R[0]*q[0]+R[1]*q[1]+R[2]*q[2], R[3]*q[0]+R[4]*q[1]+R[5]*q[2], R[6]*q[0]+R[7]*q[1]+R[8]*q[2]];
+const sx = v => cx+Srad*v[0], sy = v => cy-Srad*v[1];
+function runs(pts, vis, style){ ctx.save(); Object.assign(ctx, style.base||{}); if(style.dash) ctx.setLineDash(style.dash); let open=false; ctx.beginPath();
+  for(const p of pts){ const v=rot(p); if(vis(v)){ if(!open){ ctx.moveTo(sx(v),sy(v)); open=true; } else ctx.lineTo(sx(v),sy(v)); } else open=false; }
+  ctx.stroke(); ctx.restore(); }
+function seg(a, b, style){ const va=rot(a), vb=rot(b); ctx.save(); ctx.beginPath(); ctx.moveTo(sx(va),sy(va)); ctx.lineTo(sx(vb),sy(vb));
+  if(style.casing){ ctx.strokeStyle=K.bg; ctx.globalAlpha=style.casing; ctx.lineWidth=(style.base.lineWidth||1)+2.4; ctx.stroke(); ctx.globalAlpha=1; }
+  Object.assign(ctx, style.base||{}); if(style.dash) ctx.setLineDash(style.dash); ctx.stroke(); ctx.restore(); }
+const front = v => v[2] > 0, back = v => v[2] <= 0;
+const outsideVisible = v => !(v[2] < 0 && v[0]*v[0]+v[1]*v[1] < 1);
+// the direction on the screen (canvas axes, y down) that stays furthest from the lines leaving p towards the given points, leaning away from the centre of the disc
+function freeDir(p, towards){ const v=rot(p), angs=[]; for(const t of towards){ const w=rot(t), ex=w[0]-v[0], ey=v[1]-w[1]; if(Math.hypot(ex,ey)>0.012) angs.push(Math.atan2(ey,ex)); }
+  let best=[0.7,-0.7], top=-9; for(let k=0;k<36;k++){ const a=k*Math.PI/18, ca=Math.cos(a), sa=Math.sin(a); let s=Math.PI; for(const b of angs){ let d=Math.abs(a-b)%(2*Math.PI); if(d>Math.PI) d=2*Math.PI-d; if(d<s) s=d; }
+    s=Math.min(s,1.2)+0.25*(ca*v[0]-sa*v[1]); if(s>top+1e-9){ top=s; best=[ca,sa]; } } return best; }
+function pill(x,y,w,h){ const r=h/2; ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arc(x+w-r,y+r,r,-Math.PI/2,Math.PI/2); ctx.lineTo(x+r,y+h); ctx.arc(x+r,y+r,r,Math.PI/2,Math.PI*1.5); ctx.closePath(); }
+function label(txt, p, o){ o=o||{}; const v=rot(p), far=Math.hypot(p[0],p[1],p[2])>1.001; if(far ? !outsideVisible(v) : v[2]<=(o.pill?0.22:0.03)) return;
+  let dx=v[0], dy=-v[1]; const l=Math.hypot(dx,dy); if(l<0.12){ dx=0.7; dy=-0.7; } else { dx/=l; dy/=l; }
+  if(o.toward){ const w=rot(o.toward), ex=w[0]-v[0], ey=v[1]-w[1], m=Math.hypot(ex,ey); if(m>0.035){ dx=ex/m; dy=ey/m; } }
+  if(o.dir){ dx=o.dir[0]; dy=o.dir[1]; }
+  ctx.save(); const size=o.size||16; ctx.font=(o.italic===false?'':'italic ')+(o.weight||400)+' '+size+'px '+(o.body?K.fb:K.fd); ctx.textAlign='center'; ctx.textBaseline='middle';
+  const tw=ctx.measureText(txt).width, off=o.off===undefined?13:o.off, reach=off ? off+(o.body?Math.abs(dx)*tw/2:0) : 0, X=Math.max(tw/2+3,Math.min(W-tw/2-3,sx(v)+dx*reach)), Y=Math.max(size/2+3,Math.min(H-size/2-3,sy(v)+dy*reach));
+  if(o.pill){ ctx.globalAlpha=0.88; ctx.fillStyle=K.bg; pill(X-tw/2-8, Y-size/2-5, tw+16, size+10); ctx.fill(); ctx.globalAlpha=1; }
+  else if(o.halo!==null){ ctx.lineWidth=3.5; ctx.lineJoin='round'; ctx.strokeStyle=K.bg; ctx.strokeText(txt,X,Y); }
+  ctx.fillStyle=o.color||K.ink; ctx.fillText(txt,X,Y); ctx.restore(); }
+// a mesh is drawn opaque (fill and stroke of the same colour hide the seams); a translucent one goes through an offscreen layer
+const off = document.createElement('canvas'), octx = off.getContext('2d');
+function layer(alpha, fn){ if(alpha >= 0.999){ fn(ctx); return; } if(off.width!==cv.width || off.height!==cv.height){ off.width=cv.width; off.height=cv.height; }
+  const dpr=cv.width/W; octx.setTransform(1,0,0,1,0,0); octx.clearRect(0,0,off.width,off.height); octx.setTransform(dpr,0,0,dpr,0,0); octx.lineJoin='round'; fn(octx);
+  ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.globalAlpha=alpha; ctx.drawImage(off,0,0); ctx.restore(); }
+function meshPass(g, P, T, colour, wantFront){ const Q=P.map(rot); g.lineWidth=0.9;
+  for(let t=0;t<T.length;t++){ const A=Q[T[t][0]],B=Q[T[t][1]],D=Q[T[t][2]]; if(((A[2]+B[2]+D[2])>0)!==wantFront) continue; const col=colour(t); g.fillStyle=col; g.strokeStyle=col;
+    g.beginPath(); g.moveTo(sx(A),sy(A)); g.lineTo(sx(B),sy(B)); g.lineTo(sx(D),sy(D)); g.closePath(); g.fill(); g.stroke(); } }
+function marker(p, kind, o){ o=o||{}; const v=rot(p); const hidden = v[2] <= 0; if(hidden && !show.cone) return; ctx.save(); ctx.globalAlpha = hidden ? 0.35 : 1; const X=sx(v), Y=sy(v);
+  ctx.lineWidth=1.6; ctx.strokeStyle=K.bg; ctx.fillStyle=K.ink; ctx.beginPath();
+  if(kind==='dot'){ ctx.arc(X,Y,4.6,0,7); ctx.fill(); ctx.stroke(); }
+  else if(kind==='ring'){ ctx.fillStyle=K.bg; ctx.strokeStyle=K.ink; ctx.arc(X,Y,4.2,0,7); ctx.fill(); ctx.stroke(); }
+  else if(kind==='square'){ ctx.fillStyle=K.bg; ctx.strokeStyle=K.ink; ctx.rect(X-4,Y-4,8,8); ctx.fill(); ctx.stroke(); }
+  ctx.restore(); }
+
+// The cube. A face that looks at the viewer lies wholly in front of the ball and a face that looks away wholly behind it,
+// so the far part is drawn before the ball and the near part after everything that is on the ball.
+function cube(near){
+  const facing = (k,s) => (s*R[6+k] > 0) === near;
+  for(const w of WALLS){ const k=w[2]-1; if(!facing(k,1)) continue; const a=rot(CB), b=rot(VB[w[0]]), c=rot(VB[w[1]]);      // the cap: what the cone cuts out of the surface of the cube
+    ctx.save(); ctx.fillStyle=rgba(K.wall, near?0.18:0.10); ctx.beginPath(); ctx.moveTo(sx(a),sy(a)); ctx.lineTo(sx(b),sy(b)); ctx.lineTo(sx(c),sy(c)); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  for(const e of CED){ if(e[2].some(f => f[1]*R[6+f[0]] > 0) !== near) continue;
+    seg(e[0], e[1], near ? {base:{strokeStyle:K.ink,lineWidth:1.2,globalAlpha:0.9}} : {base:{strokeStyle:K.muted,lineWidth:1,globalAlpha:0.7}}); }
+  for(const w of WALLS){ const k=w[2]-1; if(!facing(k,1)) continue;
+    if(show.mirror) seg(CB, MID[k], {base:{strokeStyle:K.ink,lineWidth:0.9,globalAlpha:near?0.65:0.35}, dash:[5,4]});
+    seg(VB[w[0]], VB[w[1]], {base:{strokeStyle:near?K.ink:K.muted,lineWidth:near?2.1:1.4,globalAlpha:near?1:0.8}}); }
+}
+function draw(){ pending=false; tokens(); const dpr=Math.min(window.devicePixelRatio||1,2.5); const r=cv.getBoundingClientRect(); W=r.width; H=r.height; if(W<10) return;
+  if(cv.width!==Math.round(W*dpr)||cv.height!==Math.round(H*dpr)){ cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); }
+  ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H); cx=W/2; cy=H/2; const zt=show.cube?2.05:1.34; let zooming=false; if(reduced || Math.abs(zt-zoomD)<0.004) zoomD=zt; else { zoomD+=(zt-zoomD)*0.22; zooming=true; }
+  Srad=Math.min(W,H)/2/zoomD; ctx.lineCap='round'; ctx.lineJoin='round';
+  const glass = show.cone;
+  const ball = alpha => { const g=ctx.createRadialGradient(cx-0.38*Srad,cy-0.42*Srad,Srad*0.05,cx,cy,Srad*1.02); g.addColorStop(0,K.hi); g.addColorStop(1,K.lo); ctx.save(); ctx.globalAlpha=alpha; ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,Srad,0,7); ctx.fill(); ctx.restore(); };
+  const sides = WALLS.map(w => arc(V[w[0]],V[w[1]],48));
+  const others = V.map(v => arc(v,ANTI,60));
+  const RE = show.cube ? S3 : RAY;                                    // with the cube on, the edges of the cone run out to its vertices
+  const rays = V.map(v => { const p=[]; for(let i=0;i<=24;i++) p.push(scale(v,1+(RE-1)*i/24)); return p; });
+  const axes = MID.map(a => { const p=[]; for(let i=0;i<=24;i++) p.push(scale(a,1+(RAY-1)*i/24)); return p; });
+  const axesN = MID.map(a => { const p=[]; for(let i=0;i<=24;i++) p.push(scale(a,-(1+(RAY-1)*i/24))); return p; });
+
+  const moving = !!(spin || anim || zooming || (drag && drag.moved)); const mP = moving ? PT2 : PT, mT = moving ? TT2 : TT, mV = moving ? TV2 : TV;
+  const tcol = show.ground ? (t => ramp(mV[t])) : (() => ramp(0.42));
+  if(show.cube) cube(false);
+  if(!glass) ball(1);
+  // ---- things behind or inside the ball (only seen through it)
+  if(glass){
+    ball(0.35);
+    layer(0.5, g => meshPass(g, mP, mT, tcol, false));
+    for(const s of sides) runs(s, back, {base:{strokeStyle:K.muted,lineWidth:1.1}, dash:[4,4]});
+    if(show.regions) for(const s of others) runs(s, back, {base:{strokeStyle:K.muted,lineWidth:0.8}, dash:[2,4]});
+    const fans = sides.map((s,i) => ({s, z: rot(MID[WALLS[i][2]-1])[2]})).sort((a,b)=>a.z-b.z);
+    for(const f of fans){ ctx.beginPath(); ctx.moveTo(cx,cy); for(const p of f.s){ const v=rot(p); ctx.lineTo(sx(v),sy(v)); } ctx.closePath(); ctx.fillStyle=rgba(K.wall, 0.20+0.10*(f.z>0)); ctx.fill(); }
+    ctx.save(); ctx.strokeStyle=K.ink; ctx.lineWidth=1.3; for(const v0 of V){ const v=rot(v0); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(sx(v),sy(v)); ctx.stroke(); } ctx.restore();
+    ctx.save(); ctx.fillStyle=K.ink; ctx.strokeStyle=K.bg; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(cx,cy+6); ctx.lineTo(cx-5.4,cy-3.6); ctx.lineTo(cx+5.4,cy-3.6); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+  }
+  if(glass){ for(const p of rays) runs(p, v => !outsideVisible(v), {base:{strokeStyle:K.muted,lineWidth:1}, dash:[3,3]}); ball(0.42); }
+  // ---- the front of the sphere: the other three regions (tinted), then the patch T
+  if(show.regions) REG.forEach((P,k) => layer(0.16+0.06*k, g => meshPass(g, P, TC, () => K.lion, true)));
+  layer(glass ? 0.86 : 1, g => meshPass(g, mP, mT, tcol, true));
+  // ---- lines on the front of the sphere
+  if(show.regions) for(const s of others) runs(s, front, {base:{strokeStyle:K.muted,lineWidth:1}});
+  if(show.mirror) for(let i=0;i<3;i++) runs(arc(V[i], MID[[2,0,1][i]], 60), front, {base:{strokeStyle:K.ink,lineWidth:0.9,globalAlpha:0.65}, dash:[5,4]});
+  for(const s of sides) runs(s, front, {base:{strokeStyle:K.ink,lineWidth:2.4}});
+  // ---- outside the ball: edges of the cone, axes
+  if(show.cone || !show.q || show.cube) for(const p of rays){ runs(p, outsideVisible, {base:{strokeStyle:show.cube?K.muted:K.ink,lineWidth:show.cube?1:1.3}}); if(!show.cube) arrow(p[p.length-3], p[p.length-1], K.ink); }
+  // ---- the q frame: the circles q_a = 0, the axes (dashed inside the ball, solid outside), and the feet of the marked point on the axes
+  if(show.q){
+    for(const c of CIRC){ if(glass) runs(c, back, {base:{strokeStyle:K.ink,lineWidth:0.8,globalAlpha:0.22}, dash:[2,4]}); runs(c, front, {base:{strokeStyle:K.ink,lineWidth:0.8,globalAlpha:0.5}}); }
+    const O3=[0,0,0];
+    for(let i=0;i<3;i++){
+      seg(O3, scale(MID[i],-1), {base:{strokeStyle:K.ink,lineWidth:1,globalAlpha:0.32}, dash:[2,4]});
+      seg(O3, MID[i], {base:{strokeStyle:K.ink,lineWidth:1.2,globalAlpha:0.85}, dash:[5,4], casing:0.5});
+      runs(axesN[i], outsideVisible, {base:{strokeStyle:K.muted,lineWidth:1}});
+      runs(axes[i], outsideVisible, {base:{strokeStyle:K.ink,lineWidth:1.4}}); arrow(axes[i][22], axes[i][24], K.ink);
+    }
+    const pz=rot(probe)[2];
+    if(pz>0 || glass) for(let i=0;i<3;i++){ const f=scale(MID[i], probe[i]), v=rot(f); seg(probe, f, {base:{strokeStyle:K.lamb,lineWidth:1.3,globalAlpha:pz>0?0.95:0.5}, dash:[1.5,3.5]});
+      ctx.save(); ctx.globalAlpha=pz>0?1:0.5; ctx.fillStyle=K.lamb; ctx.strokeStyle=K.bg; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(sx(v),sy(v),3,0,7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+    if(!glass){ ctx.save(); ctx.fillStyle=K.ink; ctx.strokeStyle=K.bg; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(cx,cy,2.6,0,7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+  }
+  // ---- the near part of the cube, the shadow of the marked point on it, and the four vertices of the cap
+  if(show.cube){
+    cube(true);
+    const pm=Math.max(Math.abs(probe[0]),Math.abs(probe[1]),Math.abs(probe[2])), pc=scale(probe,1/pm), sh=[]; for(let i=0;i<=16;i++) sh.push(mix(probe,pc,i/16));
+    runs(sh, outsideVisible, {base:{strokeStyle:K.lamb,lineWidth:1.3}});
+    for(const p of [CB].concat(VB)){ const v=rot(p); if(!outsideVisible(v)) continue; ctx.save(); ctx.fillStyle=K.ink; ctx.strokeStyle=K.bg; ctx.lineWidth=1.2; ctx.beginPath(); ctx.arc(sx(v),sy(v),3.2,0,7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+    const sv=rot(pc); if(outsideVisible(sv)){ ctx.save(); ctx.fillStyle=K.bg; ctx.strokeStyle=K.lamb; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(sx(sv),sy(sv),4.2,0,7); ctx.fill(); ctx.stroke(); ctx.restore(); }
+  }
+  // ---- markers and labels
+  for(const v of V) marker(v,'dot'); for(const a of MID) marker(a,'square'); marker(C,'ring');
+  if(show.labels){
+    V.forEach(v => { const t=[norm(mix(v,C,0.2))]; for(const m of MID) if(dot(v,m)>0){ t.push(norm(mix(v,m,0.25))); t.push(norm(mix(v,norm(mix(m,C,0.5)),0.2))); }
+      if(show.cone || !show.q || show.cube) t.push(scale(v,1.15)); if(show.regions) t.push(norm(mix(v,ANTI,0.2))); label('V', v, {italic:false, size:15, off:17, dir:freeDir(v,t)}); });
+    { const tc = show.mirror ? V.map(v => norm(mix(C,v,0.2))).concat(MID.map(m => norm(mix(C,m,0.25)))) : []; if(show.cube) tc.push(scale(C,1.4));     // with the cube on, keep clear of the line from c to the vertex (1,1,1)
+      label('c', C, {off:22, dir:freeDir(C, tc)}); }
+    label('T', TLAB, {size:22, off:0, weight:600, color:show.ground?K.bg:K.ink, halo:null});
+    for(let i=0;i<3;i++){ if(show.q) label('q'+'₁₂₃'[i], scale(MID[i],RAY), {size:16, off:11}); else label('lion '+(i+1), MID[i], {italic:false, body:true, size:12, off:13, color:K.muted, toward:MLAB[i]}); }
+    if(show.cube) for(const p of [CB].concat(VB)) label('('+p.map(x => x<0 ? '\u2212'+(-x) : ''+x).join(', ')+')', p, {italic:false, body:true, size:11, off:10, color:K.muted});
+    if(show.regions){ UC.forEach((u,k) => label('lion '+(k+1)+' leads', u, {italic:false, body:true, size:12, off:0, pill:true})); label('lamb leads', LLAB, {italic:false, body:true, size:12, off:0, pill:true}); }
+    if(glass || show.q){ let t=[scale(C,0.3)]; if(show.q) t=t.concat(MID.map(m => scale(m,0.3)), MID.map(m => scale(m,-0.3))); if(show.cone) t=t.concat(V.map(v => scale(v,0.3)));
+      const d=freeDir([0,0,0], t), ox=cx+20*d[0], oy=cy+20*d[1]; ctx.save(); ctx.font='400 15px '+K.fd; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.lineWidth=3.5; ctx.strokeStyle=K.bg; ctx.strokeText('O',ox,oy); ctx.fillStyle=K.ink; ctx.fillText('O',ox,oy); ctx.restore(); }
+  }
+  // ---- the marked point
+  if(zooming) request();
+  const pv=rot(probe); if(pv[2]>0 || glass){ ctx.save(); ctx.globalAlpha=pv[2]>0?1:0.45; ctx.strokeStyle=K.lamb; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(sx(pv),sy(pv),9,0,7); ctx.stroke(); ctx.lineWidth=1.2; ctx.strokeStyle=K.bg; ctx.beginPath(); ctx.arc(sx(pv),sy(pv),11,0,7); ctx.stroke(); ctx.restore(); }
+}
+function arrow(a,b,col){ const va=rot(a), vb=rot(b); if(!outsideVisible(vb)) return; const ax=sx(va),ay=sy(va),bx=sx(vb),by=sy(vb); const L=Math.hypot(bx-ax,by-ay); if(L<0.8) return; const ux=(bx-ax)/L, uy=(by-ay)/L; const s=7;
+  ctx.save(); ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(bx+ux*s*0.6,by+uy*s*0.6); ctx.lineTo(bx-ux*s-uy*s*0.5,by-uy*s+ux*s*0.5); ctx.lineTo(bx-ux*s+uy*s*0.5,by-uy*s-ux*s*0.5); ctx.closePath(); ctx.fill(); ctx.restore(); }
+function request(){ if(!pending){ pending=true; requestAnimationFrame(draw); } }
+
+// ---------- readout
+function readout(){ const x=animals(probe), eps=0.03; const d=[x[0]-x[1],x[0]-x[2],x[0]-x[3]]; const meets=[], ahead=[]; d.forEach((v,i)=>{ if(Math.abs(v)<eps) meets.push(i+1); else if(v<0) ahead.push(i+1); });
+  let s, val='';
+  if(ahead.length){ let k=1; for(let i=2;i<=3;i++) if(x[i]>x[k]) k=i; s='<b>Outside T.</b> Lion '+k+' is ahead of the lamb. A lamb that started ahead can only get here by meeting a lion first, which ends the chase.'; }
+  else if(meets.length>=2){ const o=[1,2,3].find(i=>!meets.includes(i)); s='<b>A corner V of T.</b> The lamb meets lions '+meets[0]+' and '+meets[1]+' at once'+(o?'; lion '+o+' is behind.':'.'); }
+  else if(meets.length===1){ s='<b>A side of T.</b> The lamb meets lion '+meets[0]+': this is a capture wall.'; }
+  else { const pairs=[[1,2],[1,3],[2,3]].filter(p=>Math.abs(x[p[0]]-x[p[1]])<eps);
+    if(pairs.length===3) s='<b>The centre c of T.</b> The three lions are at the same place and the lamb is ahead. The motion starts here when the lions start together.';
+    else if(pairs.length===1) s='<b>Inside T, on a mirror line.</b> Lions '+pairs[0][0]+' and '+pairs[0][1]+' are at the same place; the lamb is ahead of all three.';
+    else s='<b>Inside T.</b> The lamb is ahead of all three lions.'; }
+  if(!ahead.length){ const g=groundAt(probe); if(g!==null) val='Ground state <i>m</i><sub>1</sub> = <b>'+Math.max(0,g).toFixed(2)+'</b> of its maximum'; }
+  if(rot(probe)[2]<=0 && !show.cone) val += (val?'. ':'')+'The marked point is on the far side of the sphere';
+  el('status').innerHTML=s; el('value').innerHTML=val||' ';
+  if(show.q){ const f=v=>{ const r=Math.round(v*100)/100; return (r<0?'\u2212':'')+Math.abs(r).toFixed(2); }, q=probe;
+    if(show.cube){ const a=q.map(Math.abs), m=Math.max(a[0],a[1],a[2]), on=[0,1,2].filter(i => m-a[i]<0.03*m), nm=i => '<i>q</i><sub>'+(i+1)+'</sub> = '+(q[i]<0?'\u22121':'1');
+      el('cuberead').innerHTML='Shadow on the cube: '+(on.length===1 ? 'on the face '+nm(on[0]) : on.length===2 ? 'on the edge '+nm(on[0])+', '+nm(on[1]) : 'at the vertex ('+q.map(x => x<0?'\u22121':'1').join(', ')+')')+'.'; }
+    el('q1').textContent=f(q[0]); el('q2').textContent=f(q[1]); el('q3').textContent=f(q[2]); el('s1').textContent=f(q[1]+q[2]); el('s2').textContent=f(q[0]+q[2]); el('s3').textContent=f(q[0]+q[1]); }
+  // animals on the line
+  const X=v=>156+150*v, y0=42; let h='<line x1="12" y1="'+y0+'" x2="304" y2="'+y0+'" stroke="var(--line)" stroke-width="1.5"/><path d="M304 '+(y0-4)+' L312 '+y0+' L304 '+(y0+4)+' Z" fill="var(--muted)"/>';
+  // animals at the same place are stacked; animals that are only close are staggered, so that none hides another
+  const items=[0,1,2,3].map(i=>({i,x:x[i]})).sort((a,b)=>a.x-b.x); for(let k=1;k<4;k++) if(items[k].x-items[k-1].x<eps) items[k].x=items[k-1].x;
+  const groups=[]; for(const it of items){ const g=groups[groups.length-1]; if(g && X(it.x)-X(g[g.length-1].x)<16.5) g.push(it); else groups.push([it]); }
+  for(const g of groups){ g.sort((a,b)=>a.x-b.x||b.i-a.i); g.forEach((it,k)=>{ const xm=X(it.x), yy=y0+(k-(g.length-1)/2)*17;
+    if(it.i===0) h+='<rect x="'+(xm-6.2)+'" y="'+(yy-6.2)+'" width="12.4" height="12.4" transform="rotate(45 '+xm+' '+yy+')" fill="var(--lamb)" stroke="var(--surface)" stroke-width="1.2"/>';
+    else h+='<circle cx="'+xm+'" cy="'+yy+'" r="7.6" fill="var(--lion)" stroke="var(--surface)" stroke-width="1.2"/><text x="'+xm+'" y="'+(yy+3.4)+'" text-anchor="middle" font-size="9.5" font-weight="600" fill="var(--surface)" font-family="var(--font-body)">'+it.i+'</text>'; }); }
+  el('line').innerHTML=h; }
+
+// ---------- interaction
+function setProbe(q){ const specials=[C].concat(V,MID); for(const s of specials) if(dot(s,q)>Math.cos(0.055)){ q=s; break; } probe=norm(q); readout(); request(); }
+function rotateTo(Rt, ms){ if(reduced || !ms){ R=Rt.slice(); anim=null; readout(); request(); return; } const R0=R.slice(); const D=matMul(Rt,[R0[0],R0[3],R0[6],R0[1],R0[4],R0[7],R0[2],R0[5],R0[8]]);
+  const tr=D[0]+D[4]+D[8]; const th=Math.acos(Math.max(-1,Math.min(1,(tr-1)/2))); if(th<1e-4){ R=Rt.slice(); request(); return; }
+  let ax=[D[7]-D[5],D[2]-D[6],D[3]-D[1]]; if(Math.hypot(ax[0],ax[1],ax[2])<1e-6) ax=[0,1,0]; const t0=performance.now(); spin=false; el('v-spin').setAttribute('aria-pressed','false');
+  const me=()=>{ if(anim!==me) return; const u=Math.min(1,(performance.now()-t0)/ms), e=u*u*(3-2*u); if(u<1){ R=matMul(axisAngle(ax,th*e),R0); draw(); requestAnimationFrame(me); } else { R=Rt.slice(); anim=null; readout(); request(); } }; anim=me; requestAnimationFrame(me); }
+function bringToFront(q){ const v=rot(q), target=norm([0.16,0.2,0.96]); const ax=cross(v,target), th=Math.acos(Math.max(-1,Math.min(1,dot(v,target)))); if(th<0.02) return; rotateTo(matMul(axisAngle(Math.hypot(ax[0],ax[1],ax[2])<1e-6?[0,1,0]:ax,th),R), 450); }
+let drag=null;
+cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); drag={x:e.clientX,y:e.clientY,x0:e.clientX,y0:e.clientY,moved:false}; anim=null; });
+cv.addEventListener('pointermove', e => { if(!drag) return; const dx=e.clientX-drag.x, dy=e.clientY-drag.y; if(!drag.moved && Math.hypot(e.clientX-drag.x0,e.clientY-drag.y0)<6) return; drag.moved=true; drag.x=e.clientX; drag.y=e.clientY;
+  R=matMul(axisAngle([0,1,0],dx/Srad), matMul(axisAngle([1,0,0],dy/Srad), R)); request(); });
+function endDrag(e){ if(!drag) return; const d=drag; drag=null; if(d.moved){ readout(); request(); return; } const r=cv.getBoundingClientRect(); const x=(e.clientX-r.left-cx)/Srad, y=-(e.clientY-r.top-cy)/Srad; const r2=x*x+y*y; if(r2>1) return;
+  const v=[x,y,Math.sqrt(1-r2)]; setProbe([R[0]*v[0]+R[3]*v[1]+R[6]*v[2], R[1]*v[0]+R[4]*v[1]+R[7]*v[2], R[2]*v[0]+R[5]*v[1]+R[8]*v[2]]); }
+cv.addEventListener('pointerup', endDrag); cv.addEventListener('pointercancel', () => { drag=null; });
+cv.addEventListener('keydown', e => { const k={ArrowLeft:[0,-1],ArrowRight:[0,1],ArrowUp:[-1,0],ArrowDown:[1,0]}[e.key]; if(!k) return; e.preventDefault(); R=matMul(axisAngle([0,1,0],k[1]*0.12), matMul(axisAngle([1,0,0],k[0]*0.12), R)); readout(); request(); });
+// the q view has its own default: the mirror lines are put away while it is on (they end at the same points as the axes), and come back afterwards
+let mirrorWasOn = true;
+function setShow(key, val){ show[key]=val; el('t-'+key).setAttribute('aria-pressed', String(val)); }
+function sync(){ el('rampkey').style.display=show.ground?'':'none'; el('rampnote').style.display=show.ground?'':'none'; el('qread').hidden=!show.q; el('cuberead').hidden=!show.cube; readout(); request(); }
+// the cube belongs to the q frame: it switches the frame on, and goes away with it
+for(const key of Object.keys(show)) el('t-'+key).addEventListener('click', () => { setShow(key, !show[key]); let turn=null;
+  if(key==='q'){ if(show.q){ mirrorWasOn=show.mirror; setShow('mirror', false); turn=VIEWS.q; } else { if(mirrorWasOn) setShow('mirror', true); if(show.cube) setShow('cube', false); } }
+  if(key==='cube' && show.cube){ if(!show.q){ setShow('q', true); mirrorWasOn=show.mirror; setShow('mirror', false); } turn=VIEWS.cube; }
+  sync(); if(turn) rotateTo(turn, 600); });
+el('v-q').addEventListener('click', () => rotateTo(show.cube ? VIEWS.cube : VIEWS.q, 500));
+el('v-face').addEventListener('click', () => rotateTo(VIEWS.face, 500));
+el('v-side').addEventListener('click', () => rotateTo(VIEWS.side, 500));
+el('v-corner').addEventListener('click', () => rotateTo(VIEWS.corner, 500));
+el('v-spin').addEventListener('click', () => { spin=!spin; el('v-spin').setAttribute('aria-pressed', String(spin)); request(); if(spin){ let last=performance.now(); const step=()=>{ if(!spin) return; const now=performance.now(), dt=Math.min(0.05,(now-last)/1000); last=now; if(!drag && !anim){ R=matMul(axisAngle([0,1,0],0.35*dt),R); draw(); } requestAnimationFrame(step); }; requestAnimationFrame(step); } else readout(); });
+let vi=0, wi=0;
+el('go-c').addEventListener('click', () => { setProbe(C); bringToFront(C); });
+el('go-v').addEventListener('click', () => { const q=V[vi++%3]; setProbe(q); bringToFront(q); });
+el('go-w').addEventListener('click', () => { const w=WALLS[wi++%3]; const q=norm(mix(MID[w[2]-1], V[w[0]], 0.28)); setProbe(q); bringToFront(q); });
+new ResizeObserver(request).observe(cv);
+if(window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readout(); request(); });
+new MutationObserver(() => { readout(); request(); }).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(request);
+readout(); request();
+})();
+</script>
+</body>
+</html>
